@@ -74,9 +74,17 @@ class DispatchTimer : NSObject {
         "Deinitialized"
     }
     
+    private class func startTime(interval: NSTimeInterval, now: Bool) -> dispatch_time_t {
+        return dispatch_time_t()
+    }
+    
+    private class func leeway(interval: NSTimeInterval) -> UInt64 {
+        return 0
+    }
+    
     func start(now: Bool) {
         if (OSAtomicCompareAndSwap32(Static.STOPPED, Static.RUNNING, &_v._running)) {
-            weak let weak: DispatchTimer? = self
+            weak var weak: DispatchTimer? = self
         }
     }
     
