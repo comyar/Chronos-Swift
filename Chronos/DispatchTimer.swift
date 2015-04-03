@@ -15,22 +15,40 @@ struct Static {
     internal static let DispatchTimerExecutionQueueNamePrefix       = "com.chronos.execution"
 }
 
+struct Semaphore<T> {
+    internal var _v: T {
+        willSet {
+            dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER)
+        }
+        
+        didSet {
+            dispatch_semaphore_signal(_semaphore)
+        }
+    }
+    internal var _semaphore:dispatch_semaphore_t
+    
+    init(value: T, semaValue: Int) {
+        _v = value
+        _semaphore = dispatch_semaphore_create(semaValue)
+    }
+}
+
 class DispatchTimer : NSObject {
     //Swift does not allow weak closure variables
     //MARK: Type Definitions
-    typealias DispatchTimerInitFailureClosure     = ((Void) -> Void)?
-    typealias DispatchTimerCancellationClosure    = ((DispatchTimer?) -> Void)
-    typealias DispatchTimerExecutionClosure       = ((DispatchTimer?, Int) -> Void)
+    typealias DispatchTimerInitFailureClosure   = ((Void) -> Void)?
+    typealias DispatchTimerCancellationClosure  = ((DispatchTimer?) -> Void)
+    typealias DispatchTimerExecutionClosure     = ((DispatchTimer?, Int) -> Void)
     
     //MARK: Internal Instance Variables
-    private(set) var _interval:          NSTimeInterval?
-    private(set) var _executionQueue:    dispatch_queue_t?
-    private(set) var _executionClosure:  DispatchTimerExecutionClosure?
+    private(set) var _interval:         NSTimeInterval?
+    private(set) var _executionQueue:   dispatch_queue_t?
+    private(set) var _executionClosure: DispatchTimerExecutionClosure?
     
     //MARK: Private Instance Variables
-    //TODO: Change _v to use semaphore via willSet/didSet
-    private      var _v:             CHRVolatile = CHRVolatile(_running: 0, _invocations: 0)
-    private(set) var _timer:         dispatch_source_t?
+    private         var _running:       Semaphore<Int32> = Semaphore<Int32>(value: 0, semaValue: 1)
+    private         var _invocations:   Semaphore<Int64> = Semaphore<Int64>(value: 0, semaValue: 1)
+    private(set)    var _timer:         dispatch_source_t?
     
     //MARK: Initializers for DispatchTimers
     override init() {
@@ -84,14 +102,14 @@ class DispatchTimer : NSObject {
     }
     
     func start(now: Bool) {
-        if (OSAtomicCompareAndSwap32(Static.STOPPED, Static.RUNNING, &_v._running)) {
+        if (OSAtomicCompareAndSwap32(Static.STOPPED, Static.RUNNING, &_running._v)) {
             if let interval = _interval {
                 dispatch_source_set_timer(_timer, DispatchTimer.startTime(interval, now: now), UInt64(interval) * NSEC_PER_SEC, DispatchTimer.leeway(interval))
                 dispatch_source_set_event_handler(_timer) {
                     [weak self] in
                         if let strongSelf = self {
-                            strongSelf._executionClosure?(strongSelf, Int(strongSelf._v._invocations))
-                            OSAtomicIncrement64(&strongSelf._v._invocations)
+                            strongSelf._executionClosure?(strongSelf, Int(strongSelf._invocations._v))
+                            OSAtomicIncrement64(&strongSelf._invocations._v)
                         }
                 }
                 dispatch_resume(_timer)
@@ -100,15 +118,15 @@ class DispatchTimer : NSObject {
     }
     
     func pause() {
-        if (OSAtomicCompareAndSwap32(Static.RUNNING, Static.STOPPED, &_v._running)) {
+        if (OSAtomicCompareAndSwap32(Static.RUNNING, Static.STOPPED, &_running._v)) {
             dispatch_source_cancel(_timer)
         }
     }
     
     func stop() {
-        if (OSAtomicCompareAndSwap32(Static.RUNNING, Static.STOPPED, &_v._running)) {
+        if (OSAtomicCompareAndSwap32(Static.RUNNING, Static.STOPPED, &_running._v)) {
             dispatch_source_cancel(_timer)
-            _v._invocations = 0
+            _invocations._v = 0
         }
     }
 }
