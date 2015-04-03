@@ -73,4 +73,18 @@ class DispatchTimer : NSObject {
     deinit {
         "Deinitialized"
     }
+    
+    func start(now: Bool) {
+        if (OSAtomicCompareAndSwap32(Static.STOPPED, Static.RUNNING, &_v._running)) {
+            weak let weak: DispatchTimer? = self
+        }
+    }
+    
+    func pause() {
+        
+    }
+    
+    func stop() {
+        
+    }
 }
