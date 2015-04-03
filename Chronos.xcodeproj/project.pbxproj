@@ -7,9 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6414C9FA1ACE0AA500078048 /* CHRVolatile.h in Headers */ = {isa = PBXBuildFile; fileRef = 6414C9F91ACE0A1800078048 /* CHRVolatile.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		64B3CE221ACDDA2800145E36 /* Chronos.h in Headers */ = {isa = PBXBuildFile; fileRef = 64B3CE211ACDDA2800145E36 /* Chronos.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		64B3CE281ACDDA2800145E36 /* Chronos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64B3CE1C1ACDDA2800145E36 /* Chronos.framework */; };
 		64B3CE2F1ACDDA2800145E36 /* ChronosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B3CE2E1ACDDA2800145E36 /* ChronosTests.swift */; };
+		64B3CE391ACDDA7E00145E36 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B3CE381ACDDA7E00145E36 /* DispatchTimer.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -23,12 +25,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		6414C9F91ACE0A1800078048 /* CHRVolatile.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CHRVolatile.h; sourceTree = "<group>"; };
 		64B3CE1C1ACDDA2800145E36 /* Chronos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Chronos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64B3CE201ACDDA2800145E36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64B3CE211ACDDA2800145E36 /* Chronos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Chronos.h; sourceTree = "<group>"; };
 		64B3CE271ACDDA2800145E36 /* ChronosTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ChronosTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		64B3CE2D1ACDDA2800145E36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64B3CE2E1ACDDA2800145E36 /* ChronosTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChronosTests.swift; sourceTree = "<group>"; };
+		64B3CE381ACDDA7E00145E36 /* DispatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DispatchTimer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,7 +76,9 @@
 			isa = PBXGroup;
 			children = (
 				64B3CE211ACDDA2800145E36 /* Chronos.h */,
+				6414C9F91ACE0A1800078048 /* CHRVolatile.h */,
 				64B3CE1F1ACDDA2800145E36 /* Supporting Files */,
+				64B3CE381ACDDA7E00145E36 /* DispatchTimer.swift */,
 			);
 			path = Chronos;
 			sourceTree = "<group>";
@@ -109,6 +115,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6414C9FA1ACE0AA500078048 /* CHRVolatile.h in Headers */,
 				64B3CE221ACDDA2800145E36 /* Chronos.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -209,6 +216,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				64B3CE391ACDDA7E00145E36 /* DispatchTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -270,6 +278,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
@@ -309,6 +318,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -319,6 +329,8 @@
 		64B3CE331ACDDA2800145E36 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -326,14 +338,22 @@
 				INFOPLIST_FILE = Chronos/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = mh_dylib;
+				MODULE_NAME = "";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Debug;
 		};
 		64B3CE341ACDDA2800145E36 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				CLANG_ENABLE_MODULES = YES;
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
@@ -341,8 +361,14 @@
 				INFOPLIST_FILE = Chronos/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = mh_dylib;
+				MODULE_NAME = "";
+				OTHER_SWIFT_FLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALID_ARCHS = "armv7 armv7s arm64";
 			};
 			name = Release;
 		};
@@ -395,6 +421,7 @@
 				64B3CE341ACDDA2800145E36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		64B3CE351ACDDA2800145E36 /* Build configuration list for PBXNativeTarget "ChronosTests" */ = {
 			isa = XCConfigurationList;
@@ -403,6 +430,7 @@
 				64B3CE371ACDDA2800145E36 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

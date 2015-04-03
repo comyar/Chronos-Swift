@@ -16,4 +16,4 @@ FOUNDATION_EXPORT const unsigned char ChronosVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <Chronos/PublicHeader.h>
 
-
+#import <Chronos/CHRVolatile.h>
