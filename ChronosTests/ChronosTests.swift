@@ -127,7 +127,7 @@ class ChronosTests: XCTestCase {
         XCTAssertFalse(dispatchTimer._isRunning, "Pass")
         
         dispatchTimer.cancel()
-        println(dispatchTimer._isValid)
+        
         XCTAssertFalse(dispatchTimer._isValid, "Pass")
         XCTAssertFalse(dispatchTimer._isRunning, "Pass")
     }

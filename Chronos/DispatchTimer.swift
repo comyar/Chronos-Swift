@@ -27,8 +27,8 @@ import Foundation
 //MARK Static Global Variables
 struct Static {
     internal static let STOPPED: Int32                              = 0
-    internal static let RUNNING: Int32                              = 1
-    internal static let PAUSED:  Int32                              = 2
+    internal static let PAUSED:  Int32                              = 1
+    internal static let RUNNING: Int32                              = 2
     internal static let DispatchTimerExecutionQueueNamePrefix       = "com.chronos.execution"
 }
 
