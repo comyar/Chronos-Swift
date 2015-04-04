@@ -71,12 +71,12 @@ class ChronosTests: XCTestCase {
     
     func testRepeatedTimerUsage() {
         var semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
-        var second: Bool = false
+        var flag: Bool = false
         
         var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
             (timer: DispatchTimer, invocations: Int) -> Void in
-            if invocations == 5 && !second {
-                second = true
+            if invocations == 5 && !flag {
+                flag = true
                 timer.pause()
                 
                 XCTAssertTrue(timer._isValid, "Pass")
@@ -88,7 +88,7 @@ class ChronosTests: XCTestCase {
                 XCTAssertTrue(timer._isRunning, "Pass")
             }
             
-            if invocations == 10 && second {
+            if invocations == 10 && flag {
                 timer.cancel()
                 
                 XCTAssertFalse(timer._isValid, "Pass")
@@ -106,6 +106,30 @@ class ChronosTests: XCTestCase {
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
         
         XCTAssert(true, "Pass")
+    }
+    
+    func testStartPassCancel() {
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
+            (timer: DispatchTimer?, invocations: Int) -> Void in
+        })
+        
+        XCTAssertTrue(dispatchTimer._isValid, "Pass")
+        XCTAssertFalse(dispatchTimer._isRunning, "Pass")
+        
+        dispatchTimer.start(true)
+        
+        XCTAssertTrue(dispatchTimer._isValid, "Pass")
+        XCTAssertTrue(dispatchTimer._isRunning, "Pass")
+        
+        dispatchTimer.pause()
+        
+        XCTAssertTrue(dispatchTimer._isValid, "Pass")
+        XCTAssertFalse(dispatchTimer._isRunning, "Pass")
+        
+        dispatchTimer.cancel()
+        println(dispatchTimer._isValid)
+        XCTAssertFalse(dispatchTimer._isValid, "Pass")
+        XCTAssertFalse(dispatchTimer._isRunning, "Pass")
     }
     
     func testIsRunning() {
