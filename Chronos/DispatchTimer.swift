@@ -1,10 +1,26 @@
-//
-//  DispatchTimer.swift
-//  Chronos
-//
-//  Created by Andrew Chun on 4/2/15.
-//  Copyright (c) 2015 com.zero223. All rights reserved.
-//
+/*
+The MIT License (MIT)
+
+Copyright (c) 2015 Andrew Chun
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+*/
 
 import Foundation
 
@@ -44,10 +60,21 @@ class DispatchTimer : NSObject {
     private(set) var _interval:         NSTimeInterval?
     private(set) var _executionQueue:   dispatch_queue_t?
     private(set) var _executionClosure: DispatchTimerExecutionClosure?
+    var _isValid:          Bool {
+        get {
+            return _cancelled == false ? true : false
+        }
+    }
+    var _isRunning:        Bool {
+        get {
+            return _running._v == Static.RUNNING ? true : false
+        }
+    }
     
     //MARK: Private Instance Variables
     private         var _running:       Semaphore<Int32> = Semaphore<Int32>(value: 0, semaValue: 1)
     private         var _invocations:   Semaphore<Int64> = Semaphore<Int64>(value: 0, semaValue: 1)
+    private         var _cancelled:     Bool?
     private(set)    var _timer:         dispatch_source_t?
     
     //MARK: Initializers for DispatchTimers
@@ -56,12 +83,24 @@ class DispatchTimer : NSObject {
     }
     
     init(interval: NSTimeInterval, executionClosure: DispatchTimerExecutionClosure, executionQueue: dispatch_queue_t, failureClosure: DispatchTimerInitFailureClosure) {
+        super.init()
+        
         _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, executionQueue)
         
         if let timer = _timer {
             _interval           = interval
             _executionQueue     = executionQueue
-            _executionClosure   = executionClosure //Need to implement NSCopying in order to copy
+            _executionClosure   = executionClosure
+            _cancelled          = false
+            
+            dispatch_source_set_event_handler(_timer) {
+                weak var weakSelf: DispatchTimer? = self
+                
+                if let weakSelf = weakSelf {
+                    weakSelf._executionClosure?(weakSelf, Int(weakSelf._invocations._v))
+                    OSAtomicIncrement64(&weakSelf._invocations._v)
+                }
+            }
         } else {
             if let failureClosure = failureClosure {
                 failureClosure()
@@ -71,11 +110,9 @@ class DispatchTimer : NSObject {
             
             NSException(name: "Dispatch Source Creation Failed:", reason: "Creation of a dispatch_source_t object failed with type dispatch_source_type_timer.", userInfo: nil).raise()
         }
-        
-        super.init()
     }
     
-    convenience init?(interval: NSTimeInterval, executionClosure: DispatchTimerExecutionClosure) {
+    convenience init(interval: NSTimeInterval, executionClosure: DispatchTimerExecutionClosure) {
         let UUID: NSUUID = NSUUID()
         let stringUUID: String = String(UUID.UUIDString)
         
@@ -85,12 +122,12 @@ class DispatchTimer : NSObject {
         self.init(interval: interval, executionClosure: executionClosure, executionQueue: executionQueue)
     }
     
-    convenience init?(interval: NSTimeInterval, executionClosure: DispatchTimerExecutionClosure, executionQueue: dispatch_queue_t) {
+    convenience init(interval: NSTimeInterval, executionClosure: DispatchTimerExecutionClosure, executionQueue: dispatch_queue_t) {
         self.init(interval: interval, executionClosure: executionClosure, executionQueue: executionQueue, nil)
     }
     
     deinit {
-        "Deinitialized"
+        dispatch_source_cancel(_timer)
     }
     
     private class func startTime(interval: NSTimeInterval, now: Bool) -> dispatch_time_t {
@@ -101,32 +138,44 @@ class DispatchTimer : NSObject {
         return UInt64(0.05 * interval) * NSEC_PER_SEC
     }
     
+    private func isValid() {
+        if let cancelled = _cancelled {
+            if cancelled {
+                NSException(name: "Cancellation Exception:", reason: "Cannot restart DispatchTimer that has been cancelled.", userInfo: nil).raise()
+            }
+        }
+    }
+    
     func start(now: Bool) {
-        if (OSAtomicCompareAndSwap32(Static.STOPPED, Static.RUNNING, &_running._v)) {
+        isValid()
+        
+        if OSAtomicCompareAndSwap32(Static.STOPPED, Static.RUNNING, &_running._v) {
             if let interval = _interval {
                 dispatch_source_set_timer(_timer, DispatchTimer.startTime(interval, now: now), UInt64(interval) * NSEC_PER_SEC, DispatchTimer.leeway(interval))
-                dispatch_source_set_event_handler(_timer) {
-                    [weak self] in
-                        if let strongSelf = self {
-                            strongSelf._executionClosure?(strongSelf, Int(strongSelf._invocations._v))
-                            OSAtomicIncrement64(&strongSelf._invocations._v)
-                        }
-                }
                 dispatch_resume(_timer)
             }
         }
     }
     
     func pause() {
+        isValid()
+        
         if (OSAtomicCompareAndSwap32(Static.RUNNING, Static.STOPPED, &_running._v)) {
-            dispatch_source_cancel(_timer)
+            if let timer = _timer {
+                dispatch_suspend(_timer)
+            }
         }
     }
     
-    func stop() {
+    func cancel() {
+        isValid()
+        
         if (OSAtomicCompareAndSwap32(Static.RUNNING, Static.STOPPED, &_running._v)) {
-            dispatch_source_cancel(_timer)
+            if let timer = _timer {
+                dispatch_source_cancel(_timer)
+            }
             _invocations._v = 0
+            _cancelled      = true
         }
     }
 }
