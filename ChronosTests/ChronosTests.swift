@@ -49,13 +49,13 @@ class ChronosTests: XCTestCase {
         var semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
         
         var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
-            (timer: DispatchTimer?, invocations: Int) -> Void in
+            (timer: DispatchTimer, invocations: Int) -> Void in
             if invocations == 10 {
                 dispatch_semaphore_signal(semaphore)
-                timer?.cancel()
+                timer.cancel()
                 
-                XCTAssertFalse(timer!._isValid, "Pass")
-                XCTAssertFalse(timer!._isRunning, "Pass")
+                XCTAssertFalse(timer._isValid, "Pass")
+                XCTAssertFalse(timer._isRunning, "Pass")
             }
         })
         
@@ -74,25 +74,25 @@ class ChronosTests: XCTestCase {
         var second: Bool = false
         
         var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
-            (timer: DispatchTimer?, invocations: Int) -> Void in
+            (timer: DispatchTimer, invocations: Int) -> Void in
             if invocations == 5 && !second {
                 second = true
-                timer?.pause()
+                timer.pause()
                 
-                XCTAssertTrue(timer!._isValid, "Pass")
-                XCTAssertFalse(timer!._isRunning, "Pass")
+                XCTAssertTrue(timer._isValid, "Pass")
+                XCTAssertFalse(timer._isRunning, "Pass")
                 
-                timer?.start(true)
+                timer.start(true)
                 
-                XCTAssertTrue(timer!._isValid, "Pass")
-                XCTAssertTrue(timer!._isRunning, "Pass")
+                XCTAssertTrue(timer._isValid, "Pass")
+                XCTAssertTrue(timer._isRunning, "Pass")
             }
             
             if invocations == 10 && second {
-                timer?.cancel()
+                timer.cancel()
                 
-                XCTAssertFalse(timer!._isValid, "Pass")
-                XCTAssertFalse(timer!._isRunning, "Pass")
+                XCTAssertFalse(timer._isValid, "Pass")
+                XCTAssertFalse(timer._isRunning, "Pass")
                 
                 dispatch_semaphore_signal(semaphore)
             }

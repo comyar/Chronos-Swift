@@ -50,11 +50,10 @@ struct Semaphore<T> {
 }
 
 class DispatchTimer : NSObject {
-    //Swift does not allow weak closure variables
     //MARK: Type Definitions
     typealias DispatchTimerInitFailureClosure   = ((Void) -> Void)?
-    typealias DispatchTimerCancellationClosure  = ((DispatchTimer?) -> Void)
-    typealias DispatchTimerExecutionClosure     = ((DispatchTimer?, Int) -> Void)
+    typealias DispatchTimerCancellationClosure  = ((DispatchTimer) -> Void)
+    typealias DispatchTimerExecutionClosure     = ((DispatchTimer, Int) -> Void)
     
     //MARK: Internal Instance Variables
     private(set) var _interval:         NSTimeInterval?
