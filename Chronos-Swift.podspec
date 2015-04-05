@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
 	s.name          = "Chronos-Swift"
-	s.version       = "0.1.2"
+	s.version       = "0.1.3"
 	s.summary       = "Grand Central Dispatch Utilities"
 	s.homepage      = "https://github.com/Olympus-Library/Chronos-Swift"
 	s.license       = { :type => "MIT", :file => "LICENSE" }
@@ -11,4 +11,5 @@ Pod::Spec.new do |s|
 	s.source        = { :git => "https://github.com/Olympus-Library/Chronos-Swift.git", :tag => s.version.to_s }
 	s.source_files  = "Chronos/*.swift"
 	s.requires_arc  = true
+	s.module_name	= "Chronos"
 end
