@@ -31,6 +31,7 @@ Due to a bug in libgit2, your local copy of the Cocoapods Specs repository may n
 ### Using a Dispatch Timer
 
 ```swift
+import Chronos
 
 var timer = DispatchTimer(interval: 0.25, closure: {
             (timer: DispatchTimer, count: Int) in
