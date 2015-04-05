@@ -66,128 +66,102 @@ class ChronosTests: XCTestCase {
 
         timer.cancel()
     }
-  
-//    func testDispatchTimer() {
-//        var semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
-//        
-//        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
-//            (timer: DispatchTimer, invocations: Int) -> Void in
-//            if invocations == 10 {
-//                dispatch_semaphore_signal(semaphore)
-//                timer.cancel()
-//                
-//                XCTAssertFalse(timer._isValid, "Pass")
-//                XCTAssertFalse(timer._isRunning, "Pass")
-//            }
-//        })
-//        
-//        dispatchTimer.start(true)
-//        
-//        XCTAssertTrue(dispatchTimer._isValid, "Pass")
-//        XCTAssertTrue(dispatchTimer._isRunning, "Pass")
-//        
-//        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-//        
-//        XCTAssert(true, "Pass")
-//    }
-//    
-//    func testRepeatedTimerUsage() {
-//        var semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
-//        var flag: Bool = false
-//        
-//        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
-//            (timer: DispatchTimer, invocations: Int) -> Void in
-//            if invocations == 5 && !flag {
-//                flag = true
-//                timer.pause()
-//                
-//                XCTAssertTrue(timer._isValid, "Pass")
-//                XCTAssertFalse(timer._isRunning, "Pass")
-//                
-//                timer.start(true)
-//                
-//                XCTAssertTrue(timer._isValid, "Pass")
-//                XCTAssertTrue(timer._isRunning, "Pass")
-//            }
-//            
-//            if invocations == 10 && flag {
-//                timer.cancel()
-//                
-//                XCTAssertFalse(timer._isValid, "Pass")
-//                XCTAssertFalse(timer._isRunning, "Pass")
-//                
-//                dispatch_semaphore_signal(semaphore)
-//            }
-//        })
-//        
-//        dispatchTimer.start(true)
-//        
-//        XCTAssertTrue(dispatchTimer._isValid, "Pass")
-//        XCTAssertTrue(dispatchTimer._isRunning, "Pass")
-//        
-//        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
-//        
-//        XCTAssert(true, "Pass")
-//    }
-//    
-//    func testStartPassCancel() {
-//        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
-//            (timer: DispatchTimer?, invocations: Int) -> Void in
-//        })
-//        
-//        XCTAssertTrue(dispatchTimer._isValid, "Pass")
-//        XCTAssertFalse(dispatchTimer._isRunning, "Pass")
-//        
-//        dispatchTimer.start(true)
-//        
-//        XCTAssertTrue(dispatchTimer._isValid, "Pass")
-//        XCTAssertTrue(dispatchTimer._isRunning, "Pass")
-//        
-//        dispatchTimer.pause()
-//        
-//        XCTAssertTrue(dispatchTimer._isValid, "Pass")
-//        XCTAssertFalse(dispatchTimer._isRunning, "Pass")
-//        
-//        dispatchTimer.cancel()
-//        
-//        XCTAssertFalse(dispatchTimer._isValid, "Pass")
-//        XCTAssertFalse(dispatchTimer._isRunning, "Pass")
-//    }
-//    
-//    func testIsRunning() {
-//        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
-//            (timer: DispatchTimer?, invocations: Int) -> Void in
-//        })
-//        
-//        dispatchTimer.start(true)
-//        
-//        XCTAssertTrue(dispatchTimer._isRunning, "Pass")
-//    }
-//    
-//    func testIsNotRunning() {
-//        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
-//            (timer: DispatchTimer?, invocations: Int) -> Void in
-//        })
-//        
-//        XCTAssertFalse(dispatchTimer._isRunning, "Pass")
-//    }
-//    
-//    func testIsValid() {
-//        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
-//            (timer: DispatchTimer?, invocations: Int) -> Void in
-//        })
-//        
-//        XCTAssertTrue(dispatchTimer._isValid, "Pass")
-//    }
-//    
-//    func testIsNotValid() {
-//        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, executionClosure: {
-//            (timer: DispatchTimer?, invocations: Int) -> Void in
-//        })
-//        
-//        dispatchTimer.start(true)
-//        dispatchTimer.cancel()
-//        
-//        XCTAssertFalse(dispatchTimer._isRunning, "Pass")
-//    }
+
+    func testRepeatedTimerUsage() {
+        var semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
+        var flag: Bool = false
+        
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
+            (timer: DispatchTimer, invocations: Int) -> Void in
+            if invocations == 5 && !flag {
+                flag = true
+                timer.pause()
+                
+                XCTAssertTrue(timer.isValid)
+                XCTAssertFalse(timer.isRunning)
+                
+                timer.start(true)
+                
+                XCTAssertTrue(timer.isValid)
+                XCTAssertTrue(timer.isRunning)
+            }
+            
+            if invocations == 10 && flag {
+                timer.cancel()
+                
+                XCTAssertFalse(timer.isValid)
+                XCTAssertFalse(timer.isRunning)
+                
+                dispatch_semaphore_signal(semaphore)
+            }
+        })
+        
+        dispatchTimer.start(true)
+        
+        XCTAssertTrue(dispatchTimer.isValid)
+        XCTAssertTrue(dispatchTimer.isRunning)
+        
+        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+    }
+
+    func testStartPassCancel() {
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
+            (timer: DispatchTimer?, invocations: Int) -> Void in
+        })
+        
+        XCTAssertTrue(dispatchTimer.isValid)
+        XCTAssertFalse(dispatchTimer.isRunning)
+        
+        dispatchTimer.start(true)
+        
+        XCTAssertTrue(dispatchTimer.isValid)
+        XCTAssertTrue(dispatchTimer.isRunning)
+        
+        dispatchTimer.pause()
+        
+        XCTAssertTrue(dispatchTimer.isValid)
+        XCTAssertFalse(dispatchTimer.isRunning)
+        
+        dispatchTimer.cancel()
+        
+        XCTAssertFalse(dispatchTimer.isValid)
+        XCTAssertFalse(dispatchTimer.isRunning)
+    }
+    
+    func testIsRunning() {
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
+            (timer: DispatchTimer?, invocations: Int) -> Void in
+        })
+        
+        dispatchTimer.start(true)
+        
+        XCTAssertTrue(dispatchTimer.isRunning)
+    }
+    
+    func testIsNotRunning() {
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
+            (timer: DispatchTimer?, invocations: Int) -> Void in
+        })
+        
+        XCTAssertFalse(dispatchTimer.isRunning)
+    }
+    
+    func testIsValid() {
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
+            (timer: DispatchTimer?, invocations: Int) -> Void in
+        })
+        
+        XCTAssertTrue(dispatchTimer.isValid)
+    }
+    
+    func testIsNotValid() {
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
+            (timer: DispatchTimer?, invocations: Int) -> Void in
+        })
+        
+        dispatchTimer.start(true)
+        dispatchTimer.cancel()
+        
+        XCTAssertFalse(dispatchTimer.isValid)
+    }
 }

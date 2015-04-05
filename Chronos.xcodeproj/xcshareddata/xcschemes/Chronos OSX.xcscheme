@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DD9ED4511AD0B36A0068D45E"
-               BuildableName = "Chronos OSX.framework"
+               BuildableName = "Chronos.framework"
                BlueprintName = "Chronos OSX"
                ReferencedContainer = "container:Chronos.xcodeproj">
             </BuildableReference>
@@ -57,7 +57,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD9ED4511AD0B36A0068D45E"
-            BuildableName = "Chronos OSX.framework"
+            BuildableName = "Chronos.framework"
             BlueprintName = "Chronos OSX"
             ReferencedContainer = "container:Chronos.xcodeproj">
          </BuildableReference>
@@ -76,7 +76,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD9ED4511AD0B36A0068D45E"
-            BuildableName = "Chronos OSX.framework"
+            BuildableName = "Chronos.framework"
             BlueprintName = "Chronos OSX"
             ReferencedContainer = "container:Chronos.xcodeproj">
          </BuildableReference>
@@ -94,7 +94,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD9ED4511AD0B36A0068D45E"
-            BuildableName = "Chronos OSX.framework"
+            BuildableName = "Chronos.framework"
             BlueprintName = "Chronos OSX"
             ReferencedContainer = "container:Chronos.xcodeproj">
          </BuildableReference>

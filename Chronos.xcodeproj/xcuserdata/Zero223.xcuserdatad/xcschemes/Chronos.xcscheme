@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "64B3CE1B1ACDDA2800145E36"
                BuildableName = "Chronos.framework"
-               BlueprintName = "Chronos"
+               BlueprintName = "Chronos iOS"
                ReferencedContainer = "container:Chronos.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -29,8 +29,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "64B3CE261ACDDA2800145E36"
-               BuildableName = "ChronosTests.xctest"
-               BlueprintName = "ChronosTests"
+               BuildableName = "Chronos iOS Tests.xctest"
+               BlueprintName = "Chronos iOS Tests"
                ReferencedContainer = "container:Chronos.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -47,8 +47,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "64B3CE261ACDDA2800145E36"
-               BuildableName = "ChronosTests.xctest"
-               BlueprintName = "ChronosTests"
+               BuildableName = "Chronos iOS Tests.xctest"
+               BlueprintName = "Chronos iOS Tests"
                ReferencedContainer = "container:Chronos.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -58,7 +58,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "64B3CE1B1ACDDA2800145E36"
             BuildableName = "Chronos.framework"
-            BlueprintName = "Chronos"
+            BlueprintName = "Chronos iOS"
             ReferencedContainer = "container:Chronos.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -77,7 +77,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "64B3CE1B1ACDDA2800145E36"
             BuildableName = "Chronos.framework"
-            BlueprintName = "Chronos"
+            BlueprintName = "Chronos iOS"
             ReferencedContainer = "container:Chronos.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -95,7 +95,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "64B3CE1B1ACDDA2800145E36"
             BuildableName = "Chronos.framework"
-            BlueprintName = "Chronos"
+            BlueprintName = "Chronos iOS"
             ReferencedContainer = "container:Chronos.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
