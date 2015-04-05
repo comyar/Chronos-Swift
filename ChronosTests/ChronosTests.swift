@@ -40,7 +40,7 @@ class ChronosTests: XCTestCase {
     
     func testConvenienceInitializer() {
         var timer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer, count: Int) -> Void in
+            (timer: DispatchTimer, count: Int) in
                 // nothing to do
         })
         XCTAssertTrue(timer.isValid)
@@ -51,7 +51,7 @@ class ChronosTests: XCTestCase {
         var semaphore = dispatch_semaphore_create(0)
 
         var timer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer, count: Int) -> Void in
+            (timer: DispatchTimer, count: Int) in
           if count == 10 {
             dispatch_semaphore_signal(semaphore)
           }
@@ -72,7 +72,7 @@ class ChronosTests: XCTestCase {
         var flag: Bool = false
         
         var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer, invocations: Int) -> Void in
+            (timer: DispatchTimer, invocations: Int) in
             if invocations == 5 && !flag {
                 flag = true
                 timer.pause()
@@ -106,7 +106,7 @@ class ChronosTests: XCTestCase {
 
     func testStartPassCancel() {
         var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) -> Void in
+            (timer: DispatchTimer?, invocations: Int) in
         })
         
         XCTAssertTrue(dispatchTimer.isValid)
@@ -130,7 +130,7 @@ class ChronosTests: XCTestCase {
     
     func testIsRunning() {
         var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) -> Void in
+            (timer: DispatchTimer?, invocations: Int) in
         })
         
         dispatchTimer.start(true)
@@ -140,7 +140,7 @@ class ChronosTests: XCTestCase {
     
     func testIsNotRunning() {
         var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) -> Void in
+            (timer: DispatchTimer?, invocations: Int) in
         })
         
         XCTAssertFalse(dispatchTimer.isRunning)
@@ -148,7 +148,7 @@ class ChronosTests: XCTestCase {
     
     func testIsValid() {
         var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) -> Void in
+            (timer: DispatchTimer?, invocations: Int) in
         })
         
         XCTAssertTrue(dispatchTimer.isValid)
@@ -156,7 +156,7 @@ class ChronosTests: XCTestCase {
     
     func testIsNotValid() {
         var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) -> Void in
+            (timer: DispatchTimer?, invocations: Int) in
         })
         
         dispatchTimer.start(true)

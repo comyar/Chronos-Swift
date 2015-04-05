@@ -32,7 +32,19 @@ Due to a bug in libgit2, your local copy of the Cocoapods Specs repository may n
 
 ```swift
 
+var timer = DispatchTimer(interval: 0.25, closure: {
+            (timer: DispatchTimer, count: Int) in
+                println("Execute repeating task here")
+            })
 
+/** Starting the timer */
+timer.start(true) // Fires timer immediately
+
+/** Pausing the timer */
+timer.pause()
+
+/** Permanently canceling the timer */
+timer.cancel()
 
 ```
 
