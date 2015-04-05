@@ -1,101 +1,183 @@
-/*
-The MIT License (MIT)
+//
+//  ChronosTests.swift
+//  Chronos
+//
+//  Copyright (c) 2015 Andrew Chun, Comyar Zaheri. All rights reserved.
+//
+//  Permission is hereby granted, free of charge, to any person obtaining a copy
+//  of this software and associated documentation files (the "Software"), to
+//  deal in the Software without restriction, including without limitation the
+//  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+//  sell copies of the Software, and to permit persons to whom the Software is
+//  furnished to do so, subject to the following conditions:
+//
+//  The above copyright notice and this permission notice shall be included in
+//  all copies or substantial portions of the Software.
+//
+//  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+//  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+//  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+//  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+//  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+//  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+//  IN THE SOFTWARE.
+//
 
-Copyright (c) 2015 Andrew Chun
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
-*/
+// Mark:- Imports
 
 import Foundation
 
-//MARK Static Global Variables
-struct Static {
-    internal static let STOPPED: Int32                              = 0
-    internal static let PAUSED:  Int32                              = 1
-    internal static let RUNNING: Int32                              = 2
-    internal static let DispatchTimerExecutionQueueNamePrefix       = "com.chronos.execution"
+
+// Mark:- Constants and Functions
+
+private let queuePrefix = "com.chronos.execution"
+
+private func startTime(interval: NSTimeInterval, now: Bool) -> dispatch_time_t {
+  return dispatch_time(DISPATCH_TIME_NOW, now ? 0 : Int64(interval * Double(NSEC_PER_SEC)))
 }
 
-struct Semaphore<T> {
-    internal var _semaphore:dispatch_semaphore_t
-    internal var _v: T {
-        willSet {
-            dispatch_semaphore_wait(_semaphore, DISPATCH_TIME_FOREVER)
-        }
+
+// MARK:- Type Definitions
+
+/**
+    The closure to execute if the timer fails to create a dispatch source.
+*/
+public typealias FailureClosure     = ((Void) -> Void)?
+
+/**
+    The closure to execute when the timer fires.
+
+    :param: timer   The timer that fired.
+    :param: count   The current invocation count. The first count is 0.
+*/
+public typealias ExecutionClosure   = ((DispatchTimer, Int) -> Void)
+
+
+// MARK:- DispatchTimer Implementation
+
+/**
+    A DispatchTimer allows you to create a Grand Central Dispatch-based timer
+    object. A timer waits until a certain time interval has elapsed and then
+    fires, executing a given closure.
+
+    A timer has limited accuracy when determining the exact moment to fire; the
+    actual time at which a timer fires can potentially be a significant period 
+    of time after the scheduled firing time.
+*/
+@objc (CHRDispatchTimer)
+@availability (iOS, introduced=8.0)
+@availability (OSX, introduced=10.10)
+public class DispatchTimer : NSObject {
+  
+    private struct State {
+        static let paused:  Int32   = 0
+        static let running: Int32   = 1
+        static let invalid: Int32   = 0
+        static let valid:   Int32   = 1
+    }
+  
+    private var valid   = State.invalid
+    private var running = State.paused
+    private var timer:  dispatch_source_t?
+    private var leeway: UInt64 {
+        return UInt64(0.05 * interval) * NSEC_PER_SEC;
+    }
+  
+    // MARK: Properties
+
+    /**
+        The timer's execution queue.
+    */
+    public let queue: dispatch_queue_t!
+
+    /**
+        The timer's execution interval, in seconds.
+    */
+    public let interval: NSTimeInterval!
+
+    /**
+        The timer's execution closure.
+    */
+    public let closure: ExecutionClosure!
+
+    /**
+        The number of times the execution closure has been executed.
+    */
+    private(set) var count = 0
+
+    /**
+        true, if the timer is valid; otherwise, false.
         
-        didSet {
-            dispatch_semaphore_signal(_semaphore)
-        }
+        A timer is considered valid if it has not been canceled.
+    */
+    var isValid: Bool {
+        return (valid == State.valid)
     }
-    
-    init(value: T, semaValue: Int) {
-        _v = value
-        _semaphore = dispatch_semaphore_create(semaValue)
-    }
-}
 
-class DispatchTimer : NSObject {
-    //MARK: Type Definitions
-    typealias DispatchTimerInitFailureClosure   = ((Void) -> Void)?
-    typealias DispatchTimerCancellationClosure  = ((DispatchTimer) -> Void)
-    typealias DispatchTimerExecutionClosure     = ((DispatchTimer, Int) -> Void)
-    
-    //MARK: Internal Instance Variables
-    private(set) var _interval:         NSTimeInterval?
-    private(set) var _executionQueue:   dispatch_queue_t?
-    private(set) var _executionClosure: DispatchTimerExecutionClosure?
-                 var _isValid:          Bool {
-                     get {
-                         return _cancelled == false ? true : false
-                     }
-                 }
-                 var _isRunning:        Bool {
-                     get {
-                         return _running._v == Static.RUNNING ? true : false
-                     }
-                 }
-    
-    //MARK: Private Instance Variables
-    private         var _running:       Semaphore<Int32> = Semaphore<Int32>(value: Static.PAUSED, semaValue: 1)
-    private         var _invocations:   Semaphore<Int64> = Semaphore<Int64>(value: 0, semaValue: 1)
-    private         var _cancelled:     Bool?
-    private(set)    var _timer:         dispatch_source_t?
-    
-    //MARK: Initializers for DispatchTimers
-    override init() {
-        fatalError("Must use either designated initializer or convenience initializer.")
+    /**
+        true, if the timer is currently running; otherwise, false.
+    */
+    var isRunning: Bool {
+        return (running == State.running)
     }
-    
-    init(interval: NSTimeInterval, executionClosure: DispatchTimerExecutionClosure, executionQueue: dispatch_queue_t, failureClosure: DispatchTimerInitFailureClosure) {
+  
+    // MARK: NSObject
+
+    override private init() {}
+    deinit { cancel() }
+
+    // MARK: Creating a Dispatch Timer
+  
+    /**
+        Creates a DispatchTimer object.
+        
+        :param: interval        The execution interval, in seconds.
+        :param: closure         The closure to execute at the given interval.
+        
+        :returns: A newly created DispatchTimer object.
+    */
+    convenience init(interval: NSTimeInterval, closure: ExecutionClosure) {
+        let name = "\(queuePrefix).\(NSUUID().UUIDString)"
+        let queue = dispatch_queue_create((name as NSString).UTF8String, DISPATCH_QUEUE_SERIAL)
+        self.init(interval: interval, closure: closure, queue: queue)
+    }
+
+    /**
+        Creates a DispatchTimer object.
+        
+        :param: interval        The execution interval, in seconds.
+        :param: closure         The closure to execute at the given interval.
+        :param: queue           The queue that should execute the given closure.
+        
+        :returns: A newly created DispatchTimer object.
+    */
+    convenience init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_queue_t) {
+        self.init(interval: interval, closure: closure, queue: queue, nil)
+    }
+
+    /**
+        Creates a DispatchTimer object.
+        
+        :param: interval        The execution interval, in seconds.
+        :param: closure         The closure to execute at the given interval.
+        :param: queue           The queue that should execute the given closure.
+        :param: failureClosure  The closure to execute if initialization fails.
+        
+        :returns: A newly created DispatchTimer object.
+    */
+    init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_source_t, failureClosure: FailureClosure) {
         super.init()
-        
-        _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, executionQueue)
-        
-        if let timer = _timer {
-            _interval           = interval
-            _executionQueue     = executionQueue
-            _executionClosure   = executionClosure
-            _cancelled          = false
-            
-            dispatch_source_set_event_handler(_timer) {
-                self._executionClosure?(self, Int(self._invocations._v))
-                self._invocations._v++
+        timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
+        if let timer = timer {
+            self.queue    = queue
+            self.interval = interval
+            self.closure  = closure
+
+            valid = State.valid
+            dispatch_source_set_event_handler(timer) {
+                closure(self, self.count)
+                ++self.count
             }
         } else {
             if let failureClosure = failureClosure {
@@ -103,72 +185,54 @@ class DispatchTimer : NSObject {
             } else {
                 println("Failed to create dispatch source for timer.")
             }
-            
-            _cancelled = true
         }
     }
-    
-    convenience init(interval: NSTimeInterval, executionClosure: DispatchTimerExecutionClosure) {
-        let UUID:               NSUUID          = NSUUID()
-        let stringUUID:         String          = String(UUID.UUIDString)
-        let executionQueueName: String          = "\(Static.DispatchTimerExecutionQueueNamePrefix).\(stringUUID)"
-        let executionQueue: dispatch_queue_t    = dispatch_queue_create((executionQueueName as NSString).UTF8String, DISPATCH_QUEUE_SERIAL)
+
+    // MARK: Using a Dispatch Timer
+
+    /**
+        Starts the timer.
         
-        self.init(interval: interval, executionClosure: executionClosure, executionQueue: executionQueue)
+        :param: now     true, if the timer should fire immediately.
+    */
+    public func start(now: Bool) {
+        validate()
+        if OSAtomicCompareAndSwap32Barrier(State.paused, State.running, &running) {
+            dispatch_source_set_timer(timer, startTime(interval, now), UInt64(interval * Double(NSEC_PER_SEC)), leeway)
+            dispatch_resume(timer)
+        }
     }
-    
-    convenience init(interval: NSTimeInterval, executionClosure: DispatchTimerExecutionClosure, executionQueue: dispatch_queue_t) {
-        self.init(interval: interval, executionClosure: executionClosure, executionQueue: executionQueue, nil)
+
+    /**
+        Pauses the timer and does not reset the count.
+     */
+    public func pause() {
+        validate()
+        if OSAtomicCompareAndSwap32Barrier(State.running, State.paused, &running) {
+            dispatch_suspend(timer)
+        }
     }
+
+    /**
+        Permanently cancels the timer.
     
-    deinit {
-        cancel()
-    }
-    
-    private class func startTime(interval: NSTimeInterval, now: Bool) -> dispatch_time_t {
-        return dispatch_time(DISPATCH_TIME_NOW, now ? 0 : Int64(interval) * Int64(NSEC_PER_SEC))
-    }
-    
-    private class func leeway(interval: NSTimeInterval) -> UInt64 {
-        return UInt64(0.05 * interval) * NSEC_PER_SEC
-    }
-    
-    private func isValid() {
-        if let cancelled = _cancelled {
-            if cancelled {
-                NSException(name: "Cancellation Exception:", reason: "Cannot restart DispatchTimer that has been cancelled.", userInfo: nil).raise()
+        Attempting to start or pause an invalid timer is considered an error and 
+        will throw an exception.
+    */
+    public func cancel() {
+        if OSAtomicCompareAndSwap32Barrier(State.valid, State.invalid, &valid) {
+            running = State.paused
+            if let timer = timer {
+                dispatch_source_cancel(timer)
             }
         }
     }
-    
-    func start(now: Bool) {
-        isValid()
-        
-        if OSAtomicCompareAndSwap32(Static.PAUSED, Static.RUNNING, &_running._v) {
-            if let interval = _interval {
-                dispatch_source_set_timer(_timer, DispatchTimer.startTime(interval, now: now), UInt64(interval) * NSEC_PER_SEC, DispatchTimer.leeway(interval))
-                dispatch_resume(_timer)
-            }
-        }
-    }
-    
-    func pause() {
-        isValid()
-        
-        if OSAtomicCompareAndSwap32(Static.RUNNING, Static.PAUSED, &_running._v) {
-            if let timer = _timer {
-                dispatch_suspend(_timer)
-            }
-        }
-    }
-    
-    func cancel() {
-        if OSAtomicCompareAndSwap32(Static.RUNNING, Static.STOPPED, &_running._v) || OSAtomicCompareAndSwap32(Static.PAUSED, Static.STOPPED, &_running._v) {
-            if let timer = _timer {
-                dispatch_source_cancel(_timer)
-            }
-            _invocations._v = 0
-            _cancelled      = true
+
+    private func validate() {
+        if valid != State.valid {
+          NSException(name: NSInternalInconsistencyException,
+            reason: "Attempting to use invalid DispatchTimer",
+            userInfo: nil).raise()
         }
     }
 }
