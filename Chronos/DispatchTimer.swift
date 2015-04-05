@@ -104,7 +104,7 @@ public class DispatchTimer : NSObject {
     /**
         The number of times the execution closure has been executed.
     */
-    private(set) var count = 0
+    public private(set) var count = 0
 
     /**
         true, if the timer is valid; otherwise, false.
