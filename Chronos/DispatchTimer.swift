@@ -65,7 +65,7 @@ public typealias ExecutionClosure   = ((DispatchTimer, Int) -> Void)
     actual time at which a timer fires can potentially be a significant period 
     of time after the scheduled firing time.
 */
-@objc (CHRDispatchTimer)
+@objc
 @availability (iOS, introduced=8.0)
 @availability (OSX, introduced=10.10)
 public class DispatchTimer : NSObject {
@@ -111,14 +111,14 @@ public class DispatchTimer : NSObject {
         
         A timer is considered valid if it has not been canceled.
     */
-    var isValid: Bool {
+    public var isValid: Bool {
         return (valid == State.valid)
     }
 
     /**
         true, if the timer is currently running; otherwise, false.
     */
-    var isRunning: Bool {
+    public var isRunning: Bool {
         return (running == State.running)
     }
   
@@ -137,7 +137,7 @@ public class DispatchTimer : NSObject {
         
         :returns: A newly created DispatchTimer object.
     */
-    convenience init(interval: NSTimeInterval, closure: ExecutionClosure) {
+    convenience public init(interval: NSTimeInterval, closure: ExecutionClosure) {
         let name = "\(queuePrefix).\(NSUUID().UUIDString)"
         let queue = dispatch_queue_create((name as NSString).UTF8String, DISPATCH_QUEUE_SERIAL)
         self.init(interval: interval, closure: closure, queue: queue)
@@ -152,7 +152,7 @@ public class DispatchTimer : NSObject {
         
         :returns: A newly created DispatchTimer object.
     */
-    convenience init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_queue_t) {
+    convenience public init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_queue_t) {
         self.init(interval: interval, closure: closure, queue: queue, nil)
     }
 
@@ -166,7 +166,7 @@ public class DispatchTimer : NSObject {
         
         :returns: A newly created DispatchTimer object.
     */
-    init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_source_t, failureClosure: FailureClosure) {
+    public init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_source_t, failureClosure: FailureClosure) {
         super.init()
         timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
         if let timer = timer {
