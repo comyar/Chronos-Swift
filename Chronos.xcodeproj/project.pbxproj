@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		642FEF111ACE70B200DEC5E2 /* ChronosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B3CE2E1ACDDA2800145E36 /* ChronosTests.swift */; };
+		648578B41AD0F49A005F4297 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B3CE381ACDDA7E00145E36 /* DispatchTimer.swift */; };
 		64B0D0F71AD0E58A0020EFE1 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B3CE381ACDDA7E00145E36 /* DispatchTimer.swift */; };
 		64B0D0F81AD0E58F0020EFE1 /* ChronosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B3CE2E1ACDDA2800145E36 /* ChronosTests.swift */; };
 		64B3CE281ACDDA2800145E36 /* Chronos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 64B3CE1C1ACDDA2800145E36 /* Chronos.framework */; };
@@ -353,6 +354,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				648578B41AD0F49A005F4297 /* DispatchTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
