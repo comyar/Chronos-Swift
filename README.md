@@ -26,7 +26,7 @@ If you see the following error message:
 
 > [!] Unable to find a specification for `Chronos-Swift`
 
-Due to a bug in libgit2, your local copy of the Cocoapods Specs repository may need to removed and re-cloned. More information on why and how to do this is available on the [Cocoapods blog](http://blog.cocoapods.org/Repairing-Our-Broken-Specs-Repository/).
+Due to a bug in libgit2, your local copy of the Cocoapods Specs repository may need to be removed and re-cloned. More information on why and how to do this is available on the [Cocoapods blog](http://blog.cocoapods.org/Repairing-Our-Broken-Specs-Repository/).
 
 ### Using a Dispatch Timer
 
