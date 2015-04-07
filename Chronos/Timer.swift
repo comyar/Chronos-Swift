@@ -39,12 +39,45 @@ public typealias FailureClosure     = ((Void) -> Void)?
 */
 public typealias ExecutionClosure   = ((Timer, Int) -> Void)
 
+// MARK:- State struct
+
+internal struct State {
+    static let paused:  Int32   = 0
+    static let running: Int32   = 1
+    static let invalid: Int32   = 0
+    static let valid:   Int32   = 1
+}
+
 // MARK:- Timer Protocol
 
 /**
     Types adopting the 'Timer' protocol can be used to implement methods to control a timer
 */
+
+@objc
 public protocol Timer {
+    // MARK: Properties
+    
+    /**
+        The timer's execution closure.
+    */
+    optional var closure: ExecutionClosure! { get }
+    
+    /**
+        The timer's execution queue.
+    */
+    var queue: dispatch_queue_t! { get }
+    
+    /**
+        Returns whether the timer is valid or not
+    */
+    var isValid: Bool { get }
+    
+    /**
+        Returns whether the timer is running or not
+    */
+    var isRunning: Bool { get }
+    
     /**
         Starts the timer
     

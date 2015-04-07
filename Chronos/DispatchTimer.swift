@@ -52,14 +52,6 @@ private func startTime(interval: NSTimeInterval, now: Bool) -> dispatch_time_t {
 @availability (iOS, introduced=8.0)
 @availability (OSX, introduced=10.10)
 public class DispatchTimer : NSObject, Timer {
-  
-    private struct State {
-        static let paused:  Int32   = 0
-        static let running: Int32   = 1
-        static let invalid: Int32   = 0
-        static let valid:   Int32   = 1
-    }
-  
     private var valid   = State.invalid
     private var running = State.paused
     private var timer:  dispatch_source_t?
