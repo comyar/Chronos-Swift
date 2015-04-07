@@ -37,23 +37,6 @@ private func startTime(interval: NSTimeInterval, now: Bool) -> dispatch_time_t {
   return dispatch_time(DISPATCH_TIME_NOW, now ? 0 : Int64(interval * Double(NSEC_PER_SEC)))
 }
 
-
-// MARK:- Type Definitions
-
-/**
-    The closure to execute if the timer fails to create a dispatch source.
-*/
-public typealias FailureClosure     = ((Void) -> Void)?
-
-/**
-    The closure to execute when the timer fires.
-
-    :param: timer   The timer that fired.
-    :param: count   The current invocation count. The first count is 0.
-*/
-public typealias ExecutionClosure   = ((DispatchTimer, Int) -> Void)
-
-
 // MARK:- DispatchTimer Implementation
 
 /**
@@ -68,7 +51,7 @@ public typealias ExecutionClosure   = ((DispatchTimer, Int) -> Void)
 @objc
 @availability (iOS, introduced=8.0)
 @availability (OSX, introduced=10.10)
-public class DispatchTimer : NSObject {
+public class DispatchTimer : NSObject, Timer {
   
     private struct State {
         static let paused:  Int32   = 0

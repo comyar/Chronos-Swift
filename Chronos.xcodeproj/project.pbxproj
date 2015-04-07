@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6422C4A61AD38BBC00D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
+		6422C4A71AD38C6F00D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
+		6422C4A81AD38C6F00D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
+		6422C4A91AD38C7000D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
 		642FEF111ACE70B200DEC5E2 /* ChronosTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B3CE2E1ACDDA2800145E36 /* ChronosTests.swift */; };
 		648578B41AD0F49A005F4297 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B3CE381ACDDA7E00145E36 /* DispatchTimer.swift */; };
 		64B0D0F71AD0E58A0020EFE1 /* DispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64B3CE381ACDDA7E00145E36 /* DispatchTimer.swift */; };
@@ -62,6 +66,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6422C4A51AD38BBC00D480E8 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		64B3CE1C1ACDDA2800145E36 /* Chronos.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Chronos.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64B3CE201ACDDA2800145E36 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64B3CE211ACDDA2800145E36 /* Chronos.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Chronos.h; sourceTree = "<group>"; };
@@ -131,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				64B3CE211ACDDA2800145E36 /* Chronos.h */,
+				6422C4A51AD38BBC00D480E8 /* Timer.swift */,
 				64B3CE381ACDDA7E00145E36 /* DispatchTimer.swift */,
 				64B3CE1F1ACDDA2800145E36 /* Supporting Files */,
 			);
@@ -338,6 +344,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				64B3CE391ACDDA7E00145E36 /* DispatchTimer.swift in Sources */,
+				6422C4A61AD38BBC00D480E8 /* Timer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +352,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6422C4A81AD38C6F00D480E8 /* Timer.swift in Sources */,
 				642FEF111ACE70B200DEC5E2 /* ChronosTests.swift in Sources */,
 				64B8678C1ACFCE070020EDDA /* DispatchTimer.swift in Sources */,
 			);
@@ -355,6 +363,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				648578B41AD0F49A005F4297 /* DispatchTimer.swift in Sources */,
+				6422C4A71AD38C6F00D480E8 /* Timer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -362,6 +371,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6422C4A91AD38C7000D480E8 /* Timer.swift in Sources */,
 				64B0D0F81AD0E58F0020EFE1 /* ChronosTests.swift in Sources */,
 				64B0D0F71AD0E58A0020EFE1 /* DispatchTimer.swift in Sources */,
 			);
