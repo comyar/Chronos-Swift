@@ -6,6 +6,10 @@
 [![Platform](http://img.shields.io/cocoapods/p/Chronos-Swift.svg)]()
 [![License](http://img.shields.io/cocoapods/l/Chronos-Swift.svg)](https://github.com/Olympus-Library/Chronos/blob/master/LICENSE)
 
+**Notice:** Currently the Travis-CI build will fail due to incompatability with Swift 1.2/Xcode 6.3.
+<br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Related Issue: [Travis-CI#3216](https://github.com/travis-ci/travis-ci/issues/3216)
+
 Chronos is intended to be a collection of useful Grand Central Dispatch utilities. Currently Chronos only includes a timer utility, but the whole library is under active development. If you have any specific requests or ideas for new utilities, don't hesitate to create a new issue.
 
 Chronos is part of a larger library for iOS and OS X called [Olympus](https://github.com/Olympus-Library), which is currently under active development.
