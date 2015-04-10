@@ -124,7 +124,7 @@ public class DispatchTimer : NSObject {
   
     // MARK: NSObject
 
-    override private init() {}
+    override private init() { fatalError("Cannot initialize with init(). Use convenience or designated initializer.") }
     deinit { cancel() }
 
     // MARK: Creating a Dispatch Timer
@@ -153,7 +153,7 @@ public class DispatchTimer : NSObject {
         :returns: A newly created DispatchTimer object.
     */
     convenience public init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_queue_t) {
-        self.init(interval: interval, closure: closure, queue: queue, nil)
+        self.init(interval: interval, closure: closure, queue: queue, failureClosure: nil)
     }
 
     /**
@@ -167,23 +167,28 @@ public class DispatchTimer : NSObject {
         :returns: A newly created DispatchTimer object.
     */
     public init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_source_t, failureClosure: FailureClosure) {
-        super.init()
-        timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue)
-        if let timer = timer {
-            self.queue    = queue
-            self.interval = interval
-            self.closure  = closure
-
-            valid = State.valid
-            dispatch_source_set_event_handler(timer) {
-                closure(self, self.count)
-                ++self.count
-            }
+        
+        if let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue) {
+            self.timer = timer
+            self.valid = State.valid
         } else {
             if let failureClosure = failureClosure {
                 failureClosure()
             } else {
                 println("Failed to create dispatch source for timer.")
+            }
+        }
+        
+        self.queue = queue
+        self.interval = interval
+        self.closure = closure
+        
+        super.init()
+        
+        if let timer = timer {
+            dispatch_source_set_event_handler(timer) {
+                closure(self, self.count)
+                ++self.count
             }
         }
     }
@@ -197,7 +202,7 @@ public class DispatchTimer : NSObject {
     */
     public func start(now: Bool) {
         validate()
-        if OSAtomicCompareAndSwap32Barrier(State.paused, State.running, &running) {
+        if let timer = timer where OSAtomicCompareAndSwap32Barrier(State.paused, State.running, &running) {
             dispatch_source_set_timer(timer, startTime(interval, now), UInt64(interval * Double(NSEC_PER_SEC)), leeway)
             dispatch_resume(timer)
         }
@@ -208,7 +213,7 @@ public class DispatchTimer : NSObject {
      */
     public func pause() {
         validate()
-        if OSAtomicCompareAndSwap32Barrier(State.running, State.paused, &running) {
+        if let timer = timer where OSAtomicCompareAndSwap32Barrier(State.running, State.paused, &running) {
             dispatch_suspend(timer)
         }
     }
