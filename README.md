@@ -6,7 +6,7 @@
 [![Platform](http://img.shields.io/cocoapods/p/Chronos-Swift.svg)]()
 [![License](http://img.shields.io/cocoapods/l/Chronos-Swift.svg)](https://github.com/Olympus-Library/Chronos/blob/master/LICENSE)
 
-**Notice:** Currently the Travis-CI build will fail due to incompatability with Swift 1.2/Xcode 6.3.
+**Notice:** The Travis-CI build is currently failing due to compatibility issues with Swift 1.2/Xcode 6.3.
 <br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 Related Issue: [Travis-CI#3216](https://github.com/travis-ci/travis-ci/issues/3216)
 
