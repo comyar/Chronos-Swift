@@ -62,8 +62,7 @@ var variableTimer: VariableTimer = VariableTimer(closure: {
             (timer: RepeatingTimer, count: Int) -> Void in
                 println("Execute repeating task here")
         }) {(timer: VariableTimer, count: Int) -> Double in
-                println("Return variable interval here")
-                return Double(count)
+                return Double(2 * count) // Return interval according to function
         }
 
 /** Starting the timer */
