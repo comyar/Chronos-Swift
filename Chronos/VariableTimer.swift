@@ -176,8 +176,6 @@ public class VariableTimer : NSObject, RepeatingTimer {
         })
     }
     
-    // MARK: Timer helper methods
-    
     /**
     Schedules the next execution closure
     
@@ -191,7 +189,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
         }
     }
     
-    // MARK:- Timer protocol methods
+    // MARK: Using a Variable Timer
     
     /**
     Starts the timer.
