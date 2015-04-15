@@ -3,6 +3,7 @@
 # Overview
 [![Build Status](https://travis-ci.org/Olympus-Library/Chronos-Swift.svg)](https://travis-ci.org/Olympus-Library/Chronos)
 [![Version](http://img.shields.io/cocoapods/v/Chronos-Swift.svg)](http://cocoapods.org/?q=Chronos)
+[![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Olympus-Library/Chronos-Swift)
 [![Platform](http://img.shields.io/cocoapods/p/Chronos-Swift.svg)]()
 [![License](http://img.shields.io/cocoapods/l/Chronos-Swift.svg)](https://github.com/Olympus-Library/Chronos/blob/master/LICENSE)
 
@@ -27,6 +28,12 @@ Chronos is available through Cocoa Pods. Add the following to your Podfile:
 
 ```ruby
 pod 'Chronos-Swift'
+```
+
+Chronos is available through Carthage. Add the following to your Cartfile:
+
+```ruby
+github "Olympus-Library/Chronos-Swift" "master"
 ```
 
 ###### Note: 
