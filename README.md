@@ -30,6 +30,12 @@ Chronos is available through Cocoa Pods. Add the following to your Podfile:
 pod 'Chronos-Swift'
 ```
 
+Chronos is available through Carthage. Add the following to your Cartfile:
+
+```ruby
+github "https://github.com/Olympus-Library/Chronos-Swift" "master"
+```
+
 ###### Note: 
 
 If you see the following error message:
