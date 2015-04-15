@@ -155,10 +155,14 @@ public class DispatchTimer : NSObject, RepeatingTimer {
         
         super.init()
         
+        weak var weakSelf: DispatchTimer? = self
+        
         if let timer = timer {
             dispatch_source_set_event_handler(timer) {
-                self.closure(self, self.count)
-                ++self.count
+                if let strongSelf = weakSelf {
+                    strongSelf.closure(strongSelf, strongSelf.count)
+                    ++strongSelf.count
+                }
             }
         }
     }
@@ -195,8 +199,12 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     */
     public func cancel() {
         if OSAtomicCompareAndSwap32Barrier(State.valid, State.invalid, &valid) {
-            running = State.paused
             if let timer = timer {
+                if running == State.paused {
+                    dispatch_resume(timer)
+                }
+                
+                running = State.paused
                 dispatch_source_cancel(timer)
             }
         }
