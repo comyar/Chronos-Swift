@@ -203,6 +203,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
     :param: now     true, if the timer should fire immediately.
     */
     public func start(now: Bool) {
+        validate()
         if OSAtomicCompareAndSwap32Barrier(State.paused, State.running, &running) {
             if now {
                 self.shouldFireImmediately = true
@@ -218,6 +219,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
     Pauses the timer and does not reset the count.
     */
     public func pause() {
+        validate()
         if OSAtomicCompareAndSwap32Barrier(State.running, State.paused, &running) {
             dispatch_suspend(timer)
         }
@@ -235,6 +237,14 @@ public class VariableTimer : NSObject, RepeatingTimer {
             if let timer = timer {
                 dispatch_source_cancel(timer)
             }
+        }
+    }
+    
+    private func validate() {
+        if valid != State.valid {
+            NSException(name: NSInternalInconsistencyException,
+                reason: "Attempting to use invalid DispatchTimer",
+                userInfo: nil).raise()
         }
     }
 }
