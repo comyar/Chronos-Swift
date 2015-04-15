@@ -1,5 +1,5 @@
 //
-//  Timer.swift
+//  RepeatingTimer.swift
 //  Chronos
 //
 //  Copyright (c) 2015 Andrew Chun, Comyar Zaheri. All rights reserved.
@@ -28,46 +28,24 @@
 import Foundation
 
 
-// MARK:- Timer Protocol
+// MARK:- RepeatingTimer Protocol
 
 /**
-Types adopting the Timer protocol can be used to implement methods to control
-a timer.
+Types adopting the RepeatingTimer protocol can be used to implement methods to
+control a repeating timer.
 */
 @objc
-public protocol Timer {
-    
-    // MARK: Properties
+public protocol RepeatingTimer : Timer {
     
     /**
-    The timer's execution queue.
+    The timer's execution closure.
     */
-    var queue: dispatch_queue_t! { get }
+    var closure: ExecutionClosure! { get }
+    
     
     /**
-    Returns whether the timer is valid or not.
+    The number of times the execution closure has been executed.
     */
-    var isValid: Bool { get }
+    var count: Int { get }
     
-    /**
-    Returns whether the timer is running or not.
-    */
-    var isRunning: Bool { get }
-    
-    /**
-    Starts the timer
-    
-    :param: now true, if timer starts immediately; false, otherwise.
-    */
-    func start(now: Bool)
-    
-    /**
-    Pauses the timer.
-    */
-    func pause()
-    
-    /**
-    Cancels and invalidates the timer.
-    */
-    func cancel()
 }
