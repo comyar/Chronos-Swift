@@ -38,9 +38,33 @@ Due to a bug in libgit2, your local copy of the Cocoapods Specs repository may n
 import Chronos
 
 var timer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer, count: Int) in
+            (timer: RepeatingTimer, count: Int) in
                 println("Execute repeating task here")
             })
+
+/** Starting the timer */
+timer.start(true) // Fires timer immediately
+
+/** Pausing the timer */
+timer.pause()
+
+/** Permanently canceling the timer */
+timer.cancel()
+
+```
+
+### Using a Variable Timer
+
+```swift
+import Chronos
+
+var variableTimer: VariableTimer = VariableTimer(closure: { 
+            (timer: RepeatingTimer, count: Int) -> Void in
+                println("Execute repeating task here")
+        }) {(timer: VariableTimer, count: Int) -> Double in
+                println("Return variable interval here")
+                return Double(count)
+        }
 
 /** Starting the timer */
 timer.start(true) // Fires timer immediately
