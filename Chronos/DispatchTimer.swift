@@ -66,7 +66,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     /**
     The timer's execution interval, in seconds.
     */
-    public let interval: NSTimeInterval!
+    public let interval: Double!
     
     /**
     The timer's execution closure.
@@ -109,7 +109,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     
     :returns: A newly created DispatchTimer object.
     */
-    convenience public init(interval: NSTimeInterval, closure: ExecutionClosure) {
+    convenience public init(interval: Double, closure: ExecutionClosure) {
         let name = "\(queuePrefix).\(NSUUID().UUIDString)"
         let queue = dispatch_queue_create((name as NSString).UTF8String, DISPATCH_QUEUE_SERIAL)
         self.init(interval: interval, closure: closure, queue: queue)
@@ -124,7 +124,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     
     :returns: A newly created DispatchTimer object.
     */
-    convenience public init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_queue_t) {
+    convenience public init(interval: Double, closure: ExecutionClosure, queue: dispatch_queue_t) {
         self.init(interval: interval, closure: closure, queue: queue, failureClosure: nil)
     }
     
@@ -138,7 +138,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     
     :returns: A newly created DispatchTimer object.
     */
-    public init(interval: NSTimeInterval, closure: ExecutionClosure, queue: dispatch_source_t, failureClosure: FailureClosure) {
+    public init(interval: Double, closure: ExecutionClosure, queue: dispatch_source_t, failureClosure: FailureClosure) {
         
         if let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue) {
             self.timer = timer

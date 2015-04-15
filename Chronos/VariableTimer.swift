@@ -63,7 +63,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
     :param: timer   The timer that fired.
     :param: count   The next invocation count. The first count is 0.
     */
-    public typealias IntervalClosure = ((timer: VariableTimer, count: Int) -> NSTimeInterval)
+    public typealias IntervalClosure = ((timer: VariableTimer, count: Int) -> Double)
     
     // MARK: Properties
     
