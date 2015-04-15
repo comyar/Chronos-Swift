@@ -33,7 +33,7 @@ pod 'Chronos-Swift'
 Chronos is available through Carthage. Add the following to your Cartfile:
 
 ```ruby
-github "https://github.com/Olympus-Library/Chronos-Swift" "master"
+github "Olympus-Library/Chronos-Swift" "master"
 ```
 
 ###### Note: 
