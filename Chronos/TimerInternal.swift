@@ -17,9 +17,15 @@ import Foundation
 internal struct State {
     static let paused:  Int32   = 0
     static let running: Int32   = 1
-    static let stopped: Int32   = 2
     static let invalid: Int32   = 0
     static let valid:   Int32   = 1
+}
+
+
+// Mark:- Constants and Functions
+
+internal func startTime(interval: NSTimeInterval, now: Bool) -> dispatch_time_t {
+    return dispatch_time(DISPATCH_TIME_NOW, now ? 0 : Int64(interval * Double(NSEC_PER_SEC)))
 }
 
 

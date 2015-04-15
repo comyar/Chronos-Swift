@@ -35,7 +35,7 @@ class VariableTimerTests : XCTestCase {
     func testVariableTimerConvenienceInitializer() {
         var variableTimer: VariableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             
-            }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
+        }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
                 return 0.00
         }
         
@@ -54,7 +54,7 @@ class VariableTimerTests : XCTestCase {
                 timer.cancel()
                 dispatch_semaphore_signal(semaphore)
             }
-            }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
+        }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
                 intervalInvocations.append(count)
                 return NSTimeInterval(count)
         }
@@ -87,7 +87,7 @@ class VariableTimerTests : XCTestCase {
                 timer.cancel()
                 dispatch_semaphore_signal(semaphore)
             }
-            }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
+        }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
                 intervalInvocations.append(count)
                 return NSTimeInterval(Double(count))
         }
@@ -120,7 +120,7 @@ class VariableTimerTests : XCTestCase {
                 timer.cancel()
                 dispatch_semaphore_signal(semaphore)
             }
-            }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
+        }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
                 intervalInvocations.append(count)
                 return NSTimeInterval(Double(count))
         }
@@ -153,7 +153,7 @@ class VariableTimerTests : XCTestCase {
                 timer.cancel()
                 dispatch_semaphore_signal(semaphore)
             }
-            }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
+        }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
                 intervalInvocations.append(count)
                 return NSTimeInterval(Double(count))
         }
@@ -176,7 +176,7 @@ class VariableTimerTests : XCTestCase {
         var semaphore = dispatch_semaphore_create(0)
         var variableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             dispatch_semaphore_signal(semaphore)
-            }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
+        }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
                 return 2.00
         }
         
@@ -199,7 +199,7 @@ class VariableTimerTests : XCTestCase {
         var semaphore = dispatch_semaphore_create(0)
         var variableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             dispatch_semaphore_signal(semaphore)
-            }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
+        }) { (timer: VariableTimer, count: Int) -> NSTimeInterval in
                 return 2.00
         }
         

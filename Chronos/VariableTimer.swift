@@ -32,10 +32,6 @@ import Foundation
 
 private let queuePrefix = "com.chronos.variableTimer"
 
-private func startTime(interval: NSTimeInterval, now: Bool) -> dispatch_time_t {
-    return dispatch_time(DISPATCH_TIME_NOW, now ? 0 : Int64(interval * Double(NSEC_PER_SEC)))
-}
-
 
 // MARK:- VariableTimer Implementation
 
@@ -62,7 +58,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
     // MARK: Type Aliases
     
     /**
-    The closure to execute the next interval length is necessary.
+    The closure to execute the next interval length.
     
     :param: timer   The timer that fired.
     :param: count   The next invocation count. The first count is 0.
