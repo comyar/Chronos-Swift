@@ -163,7 +163,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
         
         if let timer = timer {
             dispatch_source_set_event_handler(timer) {
-                closure(self, self.count)
+                self.closure(self, self.count)
                 ++self.count
             }
         }
