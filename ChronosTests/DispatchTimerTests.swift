@@ -1,5 +1,5 @@
 //
-//  ChronosTests.swift
+//  DispatchTimerTests.swift
 //  Chronos
 //
 //  Copyright (c) 2015 Andrew Chun, Comyar Zaheri. All rights reserved.
@@ -29,68 +29,67 @@
 import XCTest
 
 
-// MARK: - ChronosTests Implementation
+// MARK: - DispatchTimerTests Implementation
 
-class ChronosTests: XCTestCase {
-  
+class DispatchTimerTests : XCTestCase {
+    
     // 5 second timeout for async tests
     var timeout: dispatch_time_t {
         return dispatch_time(DISPATCH_TIME_NOW, Int64(5.0 * Double(NSEC_PER_SEC)))
     }
     
     func testConvenienceInitializer() {
-        var timer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer, count: Int) in
-                // nothing to do
+        var timer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, count: Int) in
+            // nothing to do
         })
         XCTAssertTrue(timer.isValid)
         XCTAssertFalse(timer.isRunning)
     }
-  
+    
     func testDispatchTimer() {
         var semaphore = dispatch_semaphore_create(0)
-
-        var timer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer, count: Int) in
-          if count == 10 {
-            dispatch_semaphore_signal(semaphore)
-          }
+        
+        var timer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, count: Int) in
+            if count == 10 {
+                dispatch_semaphore_signal(semaphore)
+            }
         })
-
+        
         XCTAssertTrue(timer.isValid)
         XCTAssertFalse(timer.isRunning)
-
+        
         timer.start(true)
-
+        
         dispatch_semaphore_wait(semaphore, timeout)
-
+        
         timer.cancel()
     }
-
+    
     func testRepeatedTimerUsage() {
         var semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
         var flag: Bool = false
         
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer, invocations: Int) in
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+            let dTimer = timer as! DispatchTimer
+            
             if invocations == 5 && !flag {
                 flag = true
                 timer.pause()
                 
-                XCTAssertTrue(timer.isValid)
-                XCTAssertFalse(timer.isRunning)
+                XCTAssertTrue(dTimer.isValid)
+                XCTAssertFalse(dTimer.isRunning)
                 
                 timer.start(true)
                 
-                XCTAssertTrue(timer.isValid)
-                XCTAssertTrue(timer.isRunning)
+                XCTAssertTrue(dTimer.isValid)
+                XCTAssertTrue(dTimer.isRunning)
             }
             
             if invocations == 10 && flag {
                 timer.cancel()
                 
-                XCTAssertFalse(timer.isValid)
-                XCTAssertFalse(timer.isRunning)
+                XCTAssertFalse(dTimer.isValid)
+                XCTAssertFalse(dTimer.isRunning)
                 
                 dispatch_semaphore_signal(semaphore)
             }
@@ -103,10 +102,10 @@ class ChronosTests: XCTestCase {
         
         dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
     }
-
+    
     func testStartPassCancel() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) in
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+            
         })
         
         XCTAssertTrue(dispatchTimer.isValid)
@@ -129,8 +128,8 @@ class ChronosTests: XCTestCase {
     }
     
     func testIsRunning() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) in
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+            
         })
         
         dispatchTimer.start(true)
@@ -139,24 +138,24 @@ class ChronosTests: XCTestCase {
     }
     
     func testIsNotRunning() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) in
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+            
         })
         
         XCTAssertFalse(dispatchTimer.isRunning)
     }
     
     func testIsValid() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) in
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+            
         })
         
         XCTAssertTrue(dispatchTimer.isValid)
     }
     
     func testIsNotValid() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: {
-            (timer: DispatchTimer?, invocations: Int) in
+        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+            
         })
         
         dispatchTimer.start(true)
