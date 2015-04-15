@@ -1,7 +1,7 @@
 
 Pod::Spec.new do |s|
 	s.name          = "Chronos-Swift"
-	s.version       = "0.1.4"
+	s.version       = "0.2.0"
 	s.summary       = "Grand Central Dispatch Utilities"
 	s.homepage      = "https://github.com/Olympus-Library/Chronos-Swift"
 	s.license       = { :type => "MIT", :file => "LICENSE" }
