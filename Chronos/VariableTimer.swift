@@ -164,15 +164,19 @@ public class VariableTimer : NSObject, RepeatingTimer {
         
         super.init()
         
+        weak var weakSelf: VariableTimer? = self
+        
         dispatch_source_set_event_handler(timer, {
-            self.shouldFireImmediately = false
-            self.isExecuting = true
-            self.closure(self, self.count)
-            ++self.count
-            if !self.shouldFireImmediately {
-                self.schedule(self.shouldFireImmediately)
+            if let strongSelf = weakSelf {
+                strongSelf.shouldFireImmediately = false
+                strongSelf.isExecuting = true
+                strongSelf.closure(strongSelf, strongSelf.count)
+                ++strongSelf.count
+                if !strongSelf.shouldFireImmediately {
+                    strongSelf.schedule(strongSelf.shouldFireImmediately)
+                }
+                strongSelf.isExecuting = false
             }
-            self.isExecuting = false
         })
     }
     
@@ -227,8 +231,12 @@ public class VariableTimer : NSObject, RepeatingTimer {
     */
     public func cancel() {
         if OSAtomicCompareAndSwap32Barrier(State.valid, State.invalid, &valid) {
-            running = State.paused
             if let timer = timer {
+                if running == State.paused {
+                    dispatch_resume(timer)
+                }
+                
+                running = State.paused
                 dispatch_source_cancel(timer)
             }
         }
