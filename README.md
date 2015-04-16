@@ -18,31 +18,26 @@ Chronos is part of a larger library for iOS and OS X called [Olympus](https://gi
 ## Utilities
 
 * **DispatchTimer** - A repeating timer that fires according to a static interval, e.g. "Fire every 5 seconds".
-* **VariableTimer** - A repeating timer that allows you to vary the interval between firings, e.g. "Fire according to the function `interval = 2 * count`. 
+* **VariableTimer** - A repeating timer that allows you to vary the interval between firings, e.g. "Fire according to the function `interval = 2 * count`." 
 
 # Usage 
 
 ### Quick Start
 
-Chronos is available through Cocoa Pods. Add the following to your Podfile:
+##### Cocoa Pods
+
+Add the following to your Podfile:
 
 ```ruby
 pod 'Chronos-Swift'
 ```
+##### Carthage 
 
-Chronos is available through Carthage. Add the following to your Cartfile:
+Add the following to your Cartfile:
 
 ```ruby
 github "Olympus-Library/Chronos-Swift" "master"
 ```
-
-###### Note: 
-
-If you see the following error message:
-
-> [!] Unable to find a specification for `Chronos-Swift`
-
-Due to a bug in libgit2, your local copy of the Cocoapods Specs repository may need to be removed and re-cloned. More information on why and how to do this is available on the [Cocoapods blog](http://blog.cocoapods.org/Repairing-Our-Broken-Specs-Repository/).
 
 ### Using a Dispatch Timer
 
