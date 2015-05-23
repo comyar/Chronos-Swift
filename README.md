@@ -1,4 +1,4 @@
-![](https://raw.githubusercontent.com/Olympus-Library/Resources/master/chronos-header.png)
+![](header.png)
 
 # Overview
 [![Build Status](https://travis-ci.org/comyarzaheri/Chronos-Swift.svg)](https://travis-ci.org/comyarzaheri/Chronos)
@@ -12,8 +12,6 @@
 Related Issue: [Travis-CI#3216](https://github.com/travis-ci/travis-ci/issues/3216)
 
 Chronos is a collection of useful Grand Central Dispatch utilities. If you have any specific requests or ideas for new utilities, don't hesitate to create a new issue.
-
-Chronos is part of a larger library for iOS and OS X called [Olympus](https://github.com/Olympus-Library), which is currently under active development.
 
 ## Utilities
 
@@ -36,7 +34,7 @@ pod 'Chronos-Swift'
 Add the following to your Cartfile:
 
 ```ruby
-github "Olympus-Library/Chronos-Swift" "master"
+github "comyarzaheri/Chronos-Swift" "master"
 ```
 
 ### Using a Dispatch Timer
