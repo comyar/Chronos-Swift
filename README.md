@@ -1,7 +1,7 @@
 ![](https://raw.githubusercontent.com/Olympus-Library/Resources/master/chronos-header.png)
 
 # Overview
-[![Build Status](https://travis-ci.org/Olympus-Library/Chronos-Swift.svg)](https://travis-ci.org/Olympus-Library/Chronos)
+[![Build Status](https://travis-ci.org/comyarzaheri/Chronos-Swift.svg)](https://travis-ci.org/comyarzaheri/Chronos)
 [![Version](http://img.shields.io/cocoapods/v/Chronos-Swift.svg)](http://cocoapods.org/?q=Chronos)
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Olympus-Library/Chronos-Swift)
 [![Platform](http://img.shields.io/cocoapods/p/Chronos-Swift.svg)]()
