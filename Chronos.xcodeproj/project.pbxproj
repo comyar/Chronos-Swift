@@ -290,6 +290,8 @@
 		64B3CE131ACDDA2800145E36 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = com.comyarzaheri;
 				TargetAttributes = {

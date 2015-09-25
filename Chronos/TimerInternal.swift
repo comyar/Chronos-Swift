@@ -39,7 +39,7 @@ public typealias FailureClosure     = ((Void) -> Void)?
 /**
 The closure to execute when the timer fires.
 
-:param: timer   The timer that fired.
-:param: count   The current invocation count. The first count is 0.
+- parameter timer:   The timer that fired.
+- parameter count:   The current invocation count. The first count is 0.
 */
 public typealias ExecutionClosure   = ((RepeatingTimer, Int) -> Void)

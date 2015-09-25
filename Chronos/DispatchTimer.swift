@@ -46,8 +46,8 @@ of time after the scheduled firing time. However, successive fires are
 guarenteed to occur in order.
 */
 @objc
-@availability (iOS, introduced=8.0)
-@availability (OSX, introduced=10.10)
+@available (iOS, introduced=8.0)
+@available (OSX, introduced=10.10)
 public class DispatchTimer : NSObject, RepeatingTimer {
     private var valid       = State.invalid
     private var running     = State.paused
@@ -103,10 +103,10 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     /**
     Creates a DispatchTimer object.
     
-    :param: interval        The execution interval, in seconds.
-    :param: closure         The closure to execute at the given interval.
+    - parameter interval:        The execution interval, in seconds.
+    - parameter closure:         The closure to execute at the given interval.
     
-    :returns: A newly created DispatchTimer object.
+    - returns: A newly created DispatchTimer object.
     */
     convenience public init(interval: Double, closure: ExecutionClosure) {
         let name = "\(queuePrefix).\(NSUUID().UUIDString)"
@@ -117,11 +117,11 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     /**
     Creates a DispatchTimer object.
     
-    :param: interval        The execution interval, in seconds.
-    :param: closure         The closure to execute at the given interval.
-    :param: queue           The queue that should execute the given closure.
+    - parameter interval:        The execution interval, in seconds.
+    - parameter closure:         The closure to execute at the given interval.
+    - parameter queue:           The queue that should execute the given closure.
     
-    :returns: A newly created DispatchTimer object.
+    - returns: A newly created DispatchTimer object.
     */
     convenience public init(interval: Double, closure: ExecutionClosure, queue: dispatch_queue_t) {
         self.init(interval: interval, closure: closure, queue: queue, failureClosure: nil)
@@ -130,14 +130,14 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     /**
     Creates a DispatchTimer object.
     
-    :param: interval        The execution interval, in seconds.
-    :param: closure         The closure to execute at the given interval.
-    :param: queue           The queue that should execute the given closure.
-    :param: failureClosure  The closure to execute if creation fails.
+    - parameter interval:        The execution interval, in seconds.
+    - parameter closure:         The closure to execute at the given interval.
+    - parameter queue:           The queue that should execute the given closure.
+    - parameter failureClosure:  The closure to execute if creation fails.
     
-    :returns: A newly created DispatchTimer object.
+    - returns: A newly created DispatchTimer object.
     */
-    public init(interval: Double, closure: ExecutionClosure, queue: dispatch_source_t, failureClosure: FailureClosure) {
+    public init(interval: Double, closure: ExecutionClosure, queue: dispatch_queue_t, failureClosure: FailureClosure) {
         if let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue) {
             self.timer = timer
             self.valid = State.valid
@@ -145,7 +145,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
             if let failureClosure = failureClosure {
                 failureClosure()
             } else {
-                println("Failed to create dispatch source for timer.")
+                print("Failed to create dispatch source for timer.")
             }
         }
         
@@ -172,12 +172,12 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     /**
     Starts the timer.
     
-    :param: now     true, if the timer should fire immediately.
+    - parameter now:     true, if the timer should fire immediately.
     */
     public func start(now: Bool) {
         validate()
         if let timer = timer where OSAtomicCompareAndSwap32Barrier(State.paused, State.running, &running) {
-            dispatch_source_set_timer(timer, startTime(interval, now), UInt64(interval * Double(NSEC_PER_SEC)), leeway)
+            dispatch_source_set_timer(timer, startTime(interval, now: now), UInt64(interval * Double(NSEC_PER_SEC)), leeway)
             dispatch_resume(timer)
         }
     }
