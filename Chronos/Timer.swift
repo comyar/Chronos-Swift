@@ -57,7 +57,7 @@ public protocol Timer {
     /**
     Starts the timer
     
-    :param: now true, if timer starts immediately; false, otherwise.
+    - parameter now: true, if timer starts immediately; false, otherwise.
     */
     func start(now: Bool)
     

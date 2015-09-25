@@ -46,8 +46,8 @@ time after the scheduled firing time. However, successive fires are guarenteed
 to occur in order.
 */
 @objc
-@availability (iOS, introduced=8.0)
-@availability (OSX, introduced=10.10)
+@available (iOS, introduced=8.0)
+@available (OSX, introduced=10.10)
 public class VariableTimer : NSObject, RepeatingTimer {
     private var valid                   = State.invalid
     private var running                 = State.paused
@@ -60,8 +60,8 @@ public class VariableTimer : NSObject, RepeatingTimer {
     /**
     The closure to execute the next interval length.
     
-    :param: timer   The timer that fired.
-    :param: count   The next invocation count. The first count is 0.
+    - parameter timer:   The timer that fired.
+    - parameter count:   The next invocation count. The first count is 0.
     */
     public typealias IntervalClosure = ((timer: VariableTimer, count: Int) -> Double)
     
@@ -113,11 +113,11 @@ public class VariableTimer : NSObject, RepeatingTimer {
     /**
     Creates a VariableTimer object.
     
-    :param: executionClosure    The closure to execute at a variable interval.
-    :param: intervalClosure     The closure to execute to obtain a variable
+    - parameter executionClosure:    The closure to execute at a variable interval.
+    - parameter intervalClosure:     The closure to execute to obtain a variable
     interval.
     
-    :returns: A newly created VariableTimer object.
+    - returns: A newly created VariableTimer object.
     */
     convenience public init(closure: ExecutionClosure, intervalProvider: IntervalClosure) {
         let name    = "\(queuePrefix).\(NSUUID().UUIDString)"
@@ -128,11 +128,11 @@ public class VariableTimer : NSObject, RepeatingTimer {
     /**
     Creates a VariableTimer object.
     
-    :param: executionClosure    The closure to execute at a variable interval.
-    :param: intervalClosure     The closure that provides time intervals.
-    :param: queue               The queue that should execute the given closure.
+    - parameter executionClosure:    The closure to execute at a variable interval.
+    - parameter intervalClosure:     The closure that provides time intervals.
+    - parameter queue:               The queue that should execute the given closure.
     
-    :returns: A newly created VariableTimer object.
+    - returns: A newly created VariableTimer object.
     */
     convenience public init(closure: ExecutionClosure, intervalProvider: IntervalClosure, queue: dispatch_queue_t) {
         self.init(closure: closure, intervalProvider: intervalProvider, queue: queue, failureClosure: nil)
@@ -141,12 +141,12 @@ public class VariableTimer : NSObject, RepeatingTimer {
     /**
     Creates a VariableTimer object.
     
-    :param: executionClosure    The closure to execute at a variable interval.
-    :param: intervalClosure     The closure that provides time intervals.
-    :param: queue               The queue that should execute the given closure.
-    :param: failureClosure      The closure to execute if creation fails.
+    - parameter executionClosure:    The closure to execute at a variable interval.
+    - parameter intervalClosure:     The closure that provides time intervals.
+    - parameter queue:               The queue that should execute the given closure.
+    - parameter failureClosure:      The closure to execute if creation fails.
     
-    :returns: A newly created VariableTimer object.
+    - returns: A newly created VariableTimer object.
     */
     public init(closure: ExecutionClosure, intervalProvider: IntervalClosure, queue: dispatch_queue_t, failureClosure: FailureClosure) {
         if let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue) {
@@ -155,7 +155,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
         } else if let failureClosure = failureClosure {
             failureClosure()
         } else {
-            println("Failed to create dispatch source for timer.")
+            print("Failed to create dispatch source for timer.")
         }
         
         self.queue              = queue
@@ -183,13 +183,13 @@ public class VariableTimer : NSObject, RepeatingTimer {
     /**
     Schedules the next execution closure
     
-    :param: now true, if the execution closure should be scheduled immediately;
+    - parameter now: true, if the execution closure should be scheduled immediately;
     false, otherwise
     */
     func schedule(now: Bool) {
         if isValid {
             let interval = intervalProvider(timer: self, count: count)
-            dispatch_source_set_timer(timer, startTime(interval, now), UInt64(interval * Double(NSEC_PER_SEC)), 0)
+            dispatch_source_set_timer(timer, startTime(interval, now: now), UInt64(interval * Double(NSEC_PER_SEC)), 0)
         }
     }
     
@@ -198,7 +198,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
     /**
     Starts the timer.
     
-    :param: now     true, if the timer should fire immediately.
+    - parameter now:     true, if the timer should fire immediately.
     */
     public func start(now: Bool) {
         validate()
