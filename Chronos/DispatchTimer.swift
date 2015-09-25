@@ -137,7 +137,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     
     - returns: A newly created DispatchTimer object.
     */
-    public init(interval: Double, closure: ExecutionClosure, queue: dispatch_source_t, failureClosure: FailureClosure) {
+    public init(interval: Double, closure: ExecutionClosure, queue: dispatch_queue_t, failureClosure: FailureClosure) {
         if let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue) {
             self.timer = timer
             self.valid = State.valid
