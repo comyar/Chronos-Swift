@@ -39,7 +39,7 @@ class DispatchTimerTests : XCTestCase {
     }
     
     func testConvenienceInitializer() {
-        var timer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, count: Int) in
+        let timer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, count: Int) in
             // nothing to do
         })
         XCTAssertTrue(timer.isValid)
@@ -47,9 +47,9 @@ class DispatchTimerTests : XCTestCase {
     }
     
     func testDispatchTimer() {
-        var semaphore = dispatch_semaphore_create(0)
+        let semaphore = dispatch_semaphore_create(0)
         
-        var timer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, count: Int) in
+        let timer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, count: Int) in
             if count == 10 {
                 dispatch_semaphore_signal(semaphore)
             }
@@ -66,10 +66,10 @@ class DispatchTimerTests : XCTestCase {
     }
     
     func testRepeatedTimerUsage() {
-        var semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
+        let semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
         var flag: Bool = false
         
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+        let dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
             let dTimer = timer as! DispatchTimer
             
             if invocations == 5 && !flag {
@@ -104,7 +104,7 @@ class DispatchTimerTests : XCTestCase {
     }
     
     func testStartPassCancel() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+        let dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
             
         })
         
@@ -128,7 +128,7 @@ class DispatchTimerTests : XCTestCase {
     }
     
     func testIsRunning() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+        let dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
             
         })
         
@@ -138,7 +138,7 @@ class DispatchTimerTests : XCTestCase {
     }
     
     func testIsNotRunning() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+        let dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
             
         })
         
@@ -146,7 +146,7 @@ class DispatchTimerTests : XCTestCase {
     }
     
     func testIsValid() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+        let dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
             
         })
         
@@ -154,7 +154,7 @@ class DispatchTimerTests : XCTestCase {
     }
     
     func testIsNotValid() {
-        var dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
+        let dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
             
         })
         

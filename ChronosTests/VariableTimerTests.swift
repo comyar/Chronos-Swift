@@ -33,7 +33,7 @@ import XCTest
 
 class VariableTimerTests : XCTestCase {
     func testVariableTimerConvenienceInitializer() {
-        var variableTimer: VariableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
+        let variableTimer: VariableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             
         }) { (timer: VariableTimer, count: Int) -> Double in
                 return 0.00
@@ -44,11 +44,11 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testStartNow() {
-        var semaphore = dispatch_semaphore_create(0)
+        let semaphore = dispatch_semaphore_create(0)
         var executedInvocations: [Int] = []
         var intervalInvocations: [Int] = []
         
-        var variableTimer: VariableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
+        let variableTimer: VariableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             executedInvocations.append(count)
             if count == 5 {
                 timer.cancel()
@@ -74,11 +74,11 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testStartNowPauseInsideStartNowInside() {
-        var semaphore = dispatch_semaphore_create(0)
+        let semaphore = dispatch_semaphore_create(0)
         var executedInvocations: [Int] = []
         var intervalInvocations: [Int] = []
         
-        var timer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
+        let timer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             executedInvocations.append(count)
             if count == 0 {
                 timer.pause()
@@ -107,11 +107,11 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testStartPauseInsideStartNowInside() {
-        var semaphore = dispatch_semaphore_create(0)
+        let semaphore = dispatch_semaphore_create(0)
         var executedInvocations: [Int] = []
         var intervalInvocations: [Int] = []
         
-        var timer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
+        let timer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             executedInvocations.append(count)
             if count == 0 {
                 timer.pause()
@@ -140,11 +140,11 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testStartPauseInsideStartInside() {
-        var semaphore = dispatch_semaphore_create(0)
+        let semaphore = dispatch_semaphore_create(0)
         var executedInvocations: [Int] = []
         var intervalInvocations: [Int] = []
         
-        var timer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
+        let timer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             executedInvocations.append(count)
             if count == 0 {
                 timer.pause()
@@ -173,8 +173,8 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testTimerPauseBeforeStart() {
-        var semaphore = dispatch_semaphore_create(0)
-        var variableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
+        let semaphore = dispatch_semaphore_create(0)
+        let variableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             dispatch_semaphore_signal(semaphore)
         }) { (timer: VariableTimer, count: Int) -> Double in
                 return 0.25
@@ -196,8 +196,8 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testTimerCancelBeforeStart() {
-        var semaphore = dispatch_semaphore_create(0)
-        var variableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
+        let semaphore = dispatch_semaphore_create(0)
+        let variableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
             dispatch_semaphore_signal(semaphore)
         }) { (timer: VariableTimer, count: Int) -> Double in
                 return 0.25
