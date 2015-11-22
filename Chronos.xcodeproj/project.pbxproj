@@ -412,9 +412,9 @@
 			targets = (
 				64B3CE1B1ACDDA2800145E36 /* Chronos iOS */,
 				DD9ED4511AD0B36A0068D45E /* Chronos OSX */,
+				64C8840E1C026826005DB548 /* Chronos tvOS */,
 				64B3CE261ACDDA2800145E36 /* Chronos iOS Tests */,
 				DD9ED45B1AD0B36A0068D45E /* Chronos OSX Tests */,
-				64C8840E1C026826005DB548 /* Chronos tvOS */,
 				64C884171C026826005DB548 /* Chronos tvOSTests */,
 			);
 		};
@@ -947,6 +947,7 @@
 				64C884211C026826005DB548 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		64C884251C026826005DB548 /* Build configuration list for PBXNativeTarget "Chronos tvOSTests" */ = {
 			isa = XCConfigurationList;
@@ -955,6 +956,7 @@
 				64C884231C026826005DB548 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DD9ED4651AD0B36A0068D45E /* Build configuration list for PBXNativeTarget "Chronos OSX" */ = {
 			isa = XCConfigurationList;
