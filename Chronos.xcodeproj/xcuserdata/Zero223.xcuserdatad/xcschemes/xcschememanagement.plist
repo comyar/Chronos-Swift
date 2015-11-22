@@ -14,6 +14,11 @@
 			<key>orderHint</key>
 			<integer>2</integer>
 		</dict>
+		<key>Chronos tvOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>2</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
@@ -23,6 +28,16 @@
 			<true/>
 		</dict>
 		<key>64B3CE261ACDDA2800145E36</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>64C8840E1C026826005DB548</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>64C884171C026826005DB548</key>
 		<dict>
 			<key>primary</key>
 			<true/>
