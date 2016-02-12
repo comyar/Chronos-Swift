@@ -18,7 +18,7 @@ Chronos is a collection of useful Grand Central Dispatch utilities. If you have 
 
 ### Quick Start
 
-##### Cocoa Pods
+##### CocoaPods
 
 Add the following to your Podfile:
 
