@@ -161,7 +161,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
             dispatch_source_set_event_handler(timer) {
                 if let strongSelf = weakSelf {
                     strongSelf.closure(strongSelf, strongSelf.count)
-                    ++strongSelf.count
+                    strongSelf.count += 1
                 }
             }
         }

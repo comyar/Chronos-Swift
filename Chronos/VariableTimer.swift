@@ -171,7 +171,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
                 strongSelf.shouldFireImmediately = false
                 strongSelf.isExecuting = true
                 strongSelf.closure(strongSelf, strongSelf.count)
-                ++strongSelf.count
+                strongSelf.count += 1
                 if !strongSelf.shouldFireImmediately {
                     strongSelf.schedule(strongSelf.shouldFireImmediately)
                 }
