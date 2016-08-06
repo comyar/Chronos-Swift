@@ -24,8 +24,8 @@ internal struct State {
 
 // Mark:- Constants and Functions
 
-internal func startTime(interval: Double, now: Bool) -> dispatch_time_t {
-    return dispatch_time(DISPATCH_TIME_NOW, now ? 0 : Int64(interval * Double(NSEC_PER_SEC)))
+internal func startTime(_ interval: Double, now: Bool) -> DispatchTime {
+    return DispatchTime.now() + Double(now ? 0 : Int64(interval * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 }
 
 

@@ -44,7 +44,7 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testStartNow() {
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
         var executedInvocations: [Int] = []
         var intervalInvocations: [Int] = []
         
@@ -52,7 +52,7 @@ class VariableTimerTests : XCTestCase {
             executedInvocations.append(count)
             if count == 5 {
                 timer.cancel()
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
             }
         }) { (timer: VariableTimer, count: Int) -> Double in
                 intervalInvocations.append(count)
@@ -60,7 +60,7 @@ class VariableTimerTests : XCTestCase {
         }
         
         variableTimer.start(true)
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        semaphore.wait(timeout: DispatchTime.distantFuture)
         
         XCTAssertEqual(6, executedInvocations.count);
         XCTAssertEqual(5, intervalInvocations.count);
@@ -74,7 +74,7 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testStartNowPauseInsideStartNowInside() {
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
         var executedInvocations: [Int] = []
         var intervalInvocations: [Int] = []
         
@@ -85,7 +85,7 @@ class VariableTimerTests : XCTestCase {
                 timer.start(true)
             } else if count == 3 {
                 timer.cancel()
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
             }
         }) { (timer: VariableTimer, count: Int) -> Double in
                 intervalInvocations.append(count)
@@ -94,7 +94,7 @@ class VariableTimerTests : XCTestCase {
         
         timer.start(true)
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        semaphore.wait(timeout: DispatchTime.distantFuture)
         
         XCTAssertEqual(4, executedInvocations.count);
         XCTAssertEqual(2, intervalInvocations.count);
@@ -107,7 +107,7 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testStartPauseInsideStartNowInside() {
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
         var executedInvocations: [Int] = []
         var intervalInvocations: [Int] = []
         
@@ -118,7 +118,7 @@ class VariableTimerTests : XCTestCase {
                 timer.start(true)
             } else if count == 3 {
                 timer.cancel()
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
             }
         }) { (timer: VariableTimer, count: Int) -> Double in
                 intervalInvocations.append(count)
@@ -127,7 +127,7 @@ class VariableTimerTests : XCTestCase {
         
         timer.start(false)
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        semaphore.wait(timeout: DispatchTime.distantFuture)
         
         XCTAssertEqual(4, executedInvocations.count);
         XCTAssertEqual(3, intervalInvocations.count);
@@ -140,7 +140,7 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testStartPauseInsideStartInside() {
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
         var executedInvocations: [Int] = []
         var intervalInvocations: [Int] = []
         
@@ -151,7 +151,7 @@ class VariableTimerTests : XCTestCase {
                 timer.start(false)
             } else if count == 3 {
                 timer.cancel()
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
             }
         }) { (timer: VariableTimer, count: Int) -> Double in
                 intervalInvocations.append(count)
@@ -160,7 +160,7 @@ class VariableTimerTests : XCTestCase {
         
         timer.start(false)
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        semaphore.wait(timeout: DispatchTime.distantFuture)
         
         XCTAssertEqual(4, executedInvocations.count);
         XCTAssertEqual(4, intervalInvocations.count);
@@ -173,9 +173,9 @@ class VariableTimerTests : XCTestCase {
     }
     
     func testTimerPauseBeforeStart() {
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
         let variableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
-            dispatch_semaphore_signal(semaphore)
+            semaphore.signal()
         }) { (timer: VariableTimer, count: Int) -> Double in
                 return 0.25
         }
@@ -190,15 +190,15 @@ class VariableTimerTests : XCTestCase {
         XCTAssertTrue(variableTimer.isRunning);
         XCTAssertTrue(variableTimer.isValid);
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
+        semaphore.wait(timeout: DispatchTime.distantFuture);
         
         variableTimer.cancel()
     }
     
     func testTimerCancelBeforeStart() {
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
         let variableTimer = VariableTimer(closure: { (timer: RepeatingTimer, count: Int) -> Void in
-            dispatch_semaphore_signal(semaphore)
+            semaphore.signal()
         }) { (timer: VariableTimer, count: Int) -> Double in
                 return 0.25
         }

@@ -46,12 +46,12 @@ of time after the scheduled firing time. However, successive fires are
 guarenteed to occur in order.
 */
 @objc
-@available (iOS, introduced=8.0)
-@available (OSX, introduced=10.10)
+@available (iOS, introduced: 8.0)
+@available (OSX, introduced: 10.10)
 public class DispatchTimer : NSObject, RepeatingTimer {
     private var valid       = State.invalid
     private var running     = State.paused
-    private var timer:  dispatch_source_t?
+    private var timer:  DispatchSource?
     private var leeway: UInt64 {
         return UInt64(0.05 * interval) * NSEC_PER_SEC;
     }
@@ -61,7 +61,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     /**
     The timer's execution queue.
     */
-    public let queue: dispatch_queue_t!
+    public let queue: DispatchQueue!
     
     /**
     The timer's execution interval, in seconds.
@@ -109,8 +109,8 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     - returns: A newly created DispatchTimer object.
     */
     convenience public init(interval: Double, closure: ExecutionClosure) {
-        let name = "\(queuePrefix).\(NSUUID().UUIDString)"
-        let queue = dispatch_queue_create((name as NSString).UTF8String, DISPATCH_QUEUE_SERIAL)
+        let name = "\(queuePrefix).\(UUID().uuidString)"
+        let queue = DispatchQueue(label: (name as NSString).utf8String, qos: DispatchQueue.Attributes.serial)
         self.init(interval: interval, closure: closure, queue: queue)
     }
     
@@ -123,7 +123,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     
     - returns: A newly created DispatchTimer object.
     */
-    convenience public init(interval: Double, closure: ExecutionClosure, queue: dispatch_queue_t) {
+    convenience public init(interval: Double, closure: ExecutionClosure, queue: DispatchQueue) {
         self.init(interval: interval, closure: closure, queue: queue, failureClosure: nil)
     }
     
@@ -137,8 +137,8 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     
     - returns: A newly created DispatchTimer object.
     */
-    public init(interval: Double, closure: ExecutionClosure, queue: dispatch_queue_t, failureClosure: FailureClosure) {
-        if let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue) {
+    public init(interval: Double, closure: ExecutionClosure, queue: DispatchQueue, failureClosure: FailureClosure) {
+        if let timer = DispatchSource.makeTimerSource(flags: DispatchSource.TimerFlags(rawValue: UInt(0)), queue: queue) /*Migrator FIXME: Use DispatchSourceTimer to avoid the cast*/ as! DispatchSource {
             self.timer = timer
             self.valid = State.valid
         } else {
@@ -158,7 +158,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
         weak var weakSelf: DispatchTimer? = self
         
         if let timer = timer {
-            dispatch_source_set_event_handler(timer) {
+            timer.setEventHandler {
                 if let strongSelf = weakSelf {
                     strongSelf.closure(strongSelf, strongSelf.count)
                     strongSelf.count += 1
@@ -174,11 +174,11 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     
     - parameter now:     true, if the timer should fire immediately.
     */
-    public func start(now: Bool) {
+    public func start(_ now: Bool) {
         validate()
         if let timer = timer where OSAtomicCompareAndSwap32Barrier(State.paused, State.running, &running) {
-            dispatch_source_set_timer(timer, startTime(interval, now: now), UInt64(interval * Double(NSEC_PER_SEC)), leeway)
-            dispatch_resume(timer)
+            timer.setTimer(start: startTime(interval, now: now), interval: UInt64(interval * Double(NSEC_PER_SEC)), leeway: leeway)
+            timer.resume()
         }
     }
     
@@ -188,7 +188,7 @@ public class DispatchTimer : NSObject, RepeatingTimer {
     public func pause() {
         validate()
         if let timer = timer where OSAtomicCompareAndSwap32Barrier(State.running, State.paused, &running) {
-            dispatch_suspend(timer)
+            timer.suspend()
         }
     }
     
@@ -201,18 +201,18 @@ public class DispatchTimer : NSObject, RepeatingTimer {
         if OSAtomicCompareAndSwap32Barrier(State.valid, State.invalid, &valid) {
             if let timer = timer {
                 if running == State.paused {
-                    dispatch_resume(timer)
+                    timer.resume()
                 }
                 
                 running = State.paused
-                dispatch_source_cancel(timer)
+                timer.cancel()
             }
         }
     }
     
     private func validate() {
         if valid != State.valid {
-            NSException(name: NSInternalInconsistencyException,
+            NSException(name: NSExceptionName.internalInconsistencyException,
                 reason: "Attempting to use invalid DispatchTimer",
                 userInfo: nil).raise()
         }
