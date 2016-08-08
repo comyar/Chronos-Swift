@@ -1,5 +1,5 @@
 //
-//  RepeatingTimer.swift
+//  OneShotTimer.swift
 //  Chronos
 //
 //  Copyright (c) 2015 Andrew Chun, Comyar Zaheri. All rights reserved.
@@ -28,23 +28,18 @@
 import Foundation
 
 
-// MARK:- RepeatingTimer Protocol
+// MARK:- OneShotTimer Protocol
 
 /**
-Types adopting the RepeatingTimer protocol can be used to implement methods to
-control a repeating timer.
-*/
+ Types adopting the OneShotTimer protocol can be used to implement methods to
+ control a one shot timer.
+ */
 @objc
-public protocol RepeatingTimer : Timer {
-    
-    /**
-    The number of times the execution closure has been executed.
-    */
-    var count: Int { get }
+public protocol OneShotTimer : Timer {
 
     /**
      The timer's execution closure.
      */
-    var closure: RepeatedExecutionClosure! { get }
+    var closure: OneShotExecutionClosure! { get }
     
 }

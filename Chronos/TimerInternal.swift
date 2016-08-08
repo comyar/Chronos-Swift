@@ -42,4 +42,11 @@ The closure to execute when the timer fires.
 - parameter timer:   The timer that fired.
 - parameter count:   The current invocation count. The first count is 0.
 */
-public typealias ExecutionClosure   = ((RepeatingTimer, Int) -> Void)
+public typealias RepeatedExecutionClosure = ((RepeatingTimer, Int) -> Void)
+
+/**
+ The closure to execute when the timer fires.
+
+ - parameter timer:   The timer that fired. 
+ */
+public typealias OneShotExecutionClosure = ((OneShotTimer) -> Void)

@@ -75,7 +75,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
     /**
     The timer's execution closure.
     */
-    public let closure: ExecutionClosure!
+    public let closure: RepeatedExecutionClosure!
     
     /**
     The timer's interval closure.
@@ -119,7 +119,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
     
     - returns: A newly created VariableTimer object.
     */
-    convenience public init(closure: ExecutionClosure, intervalProvider: IntervalClosure) {
+    convenience public init(closure: RepeatedExecutionClosure, intervalProvider: IntervalClosure) {
         let name    = "\(queuePrefix).\(NSUUID().UUIDString)"
         let queue   = dispatch_queue_create((name as NSString).UTF8String, DISPATCH_QUEUE_SERIAL)
         self.init(closure: closure, intervalProvider: intervalProvider, queue: queue)
@@ -134,7 +134,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
     
     - returns: A newly created VariableTimer object.
     */
-    convenience public init(closure: ExecutionClosure, intervalProvider: IntervalClosure, queue: dispatch_queue_t) {
+    convenience public init(closure: RepeatedExecutionClosure, intervalProvider: IntervalClosure, queue: dispatch_queue_t) {
         self.init(closure: closure, intervalProvider: intervalProvider, queue: queue, failureClosure: nil)
     }
     
@@ -148,7 +148,7 @@ public class VariableTimer : NSObject, RepeatingTimer {
     
     - returns: A newly created VariableTimer object.
     */
-    public init(closure: ExecutionClosure, intervalProvider: IntervalClosure, queue: dispatch_queue_t, failureClosure: FailureClosure) {
+    public init(closure: RepeatedExecutionClosure, intervalProvider: IntervalClosure, queue: dispatch_queue_t, failureClosure: FailureClosure) {
         if let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue) {
             self.timer = timer
             self.valid = State.valid
