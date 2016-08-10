@@ -60,6 +60,8 @@ class OneShotDispatchTimerTests : XCTestCase {
 
         dispatch_semaphore_wait(semaphore, timeout)
 
+        XCTAssertFalse(timer.isRunning)
+
         timer.cancel()
     }
 

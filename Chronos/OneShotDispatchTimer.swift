@@ -152,8 +152,8 @@ public class OneShotDispatchTimer : NSObject, OneShotTimer {
 
         if let timer = timer {
             dispatch_source_set_event_handler(timer) {
-                dispatch_source_cancel(timer); //Ensure timer only gets called once
                 if let strongSelf = weakSelf {
+                    strongSelf.cancel() //Ensure timer only gets called once
                     strongSelf.closure(strongSelf)                    
                 }
             }
