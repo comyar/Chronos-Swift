@@ -7,6 +7,21 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		054C97901D5518F200C481BD /* OneShotDispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C978F1D5518F200C481BD /* OneShotDispatchTimer.swift */; };
+		054C97911D551DBF00C481BD /* OneShotDispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C978F1D5518F200C481BD /* OneShotDispatchTimer.swift */; };
+		054C97921D551DC000C481BD /* OneShotDispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C978F1D5518F200C481BD /* OneShotDispatchTimer.swift */; };
+		054C97961D551FEA00C481BD /* OneShotTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C97951D551FEA00C481BD /* OneShotTimer.swift */; };
+		054C97971D55201F00C481BD /* OneShotTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C97951D551FEA00C481BD /* OneShotTimer.swift */; };
+		054C97981D55201F00C481BD /* OneShotTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C97951D551FEA00C481BD /* OneShotTimer.swift */; };
+		054C97991D55219000C481BD /* OneShotTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C97951D551FEA00C481BD /* OneShotTimer.swift */; };
+		054C979A1D55219100C481BD /* OneShotTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C97951D551FEA00C481BD /* OneShotTimer.swift */; };
+		054C979B1D55219200C481BD /* OneShotTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C97951D551FEA00C481BD /* OneShotTimer.swift */; };
+		054C979C1D5521E800C481BD /* OneShotTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C97931D551F2F00C481BD /* OneShotTimerTests.swift */; };
+		054C979D1D5521EE00C481BD /* OneShotTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C97931D551F2F00C481BD /* OneShotTimerTests.swift */; };
+		054C979E1D5521EF00C481BD /* OneShotTimerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C97931D551F2F00C481BD /* OneShotTimerTests.swift */; };
+		054C979F1D55220B00C481BD /* OneShotDispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C978F1D5518F200C481BD /* OneShotDispatchTimer.swift */; };
+		054C97A01D55220C00C481BD /* OneShotDispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C978F1D5518F200C481BD /* OneShotDispatchTimer.swift */; };
+		054C97A11D55220C00C481BD /* OneShotDispatchTimer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 054C978F1D5518F200C481BD /* OneShotDispatchTimer.swift */; };
 		6422C4A61AD38BBC00D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
 		6422C4A71AD38C6F00D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
 		6422C4A81AD38C6F00D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
@@ -101,6 +116,9 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		054C978F1D5518F200C481BD /* OneShotDispatchTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneShotDispatchTimer.swift; sourceTree = "<group>"; };
+		054C97931D551F2F00C481BD /* OneShotTimerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneShotTimerTests.swift; sourceTree = "<group>"; };
+		054C97951D551FEA00C481BD /* OneShotTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OneShotTimer.swift; sourceTree = "<group>"; };
 		6422C4A51AD38BBC00D480E8 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		644FA4141ADE19560007B808 /* TimerInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerInternal.swift; sourceTree = "<group>"; };
 		644FA4161ADE19760007B808 /* VariableTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariableTimer.swift; sourceTree = "<group>"; };
@@ -199,6 +217,8 @@
 				64FFA21A1ADE1932006E36D3 /* RepeatingTimer.swift */,
 				64B3CE381ACDDA7E00145E36 /* DispatchTimer.swift */,
 				644FA4161ADE19760007B808 /* VariableTimer.swift */,
+				054C97951D551FEA00C481BD /* OneShotTimer.swift */,
+				054C978F1D5518F200C481BD /* OneShotDispatchTimer.swift */,
 				64B3CE1F1ACDDA2800145E36 /* Supporting Files */,
 			);
 			path = Chronos;
@@ -217,6 +237,7 @@
 			children = (
 				644FA4221ADE19A50007B808 /* DispatchTimerTests.swift */,
 				64502B951ADE19C50008443B /* VariableTimerTests.swift */,
+				054C97931D551F2F00C481BD /* OneShotTimerTests.swift */,
 				64B3CE2C1ACDDA2800145E36 /* Supporting Files */,
 			);
 			path = ChronosTests;
@@ -473,10 +494,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				054C97901D5518F200C481BD /* OneShotDispatchTimer.swift in Sources */,
 				644FA4151ADE19560007B808 /* TimerInternal.swift in Sources */,
 				64B3CE391ACDDA7E00145E36 /* DispatchTimer.swift in Sources */,
 				644FA4171ADE19760007B808 /* VariableTimer.swift in Sources */,
 				64FFA21B1ADE1932006E36D3 /* RepeatingTimer.swift in Sources */,
+				054C97961D551FEA00C481BD /* OneShotTimer.swift in Sources */,
 				6422C4A61AD38BBC00D480E8 /* Timer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -491,6 +514,9 @@
 				644FA4201ADE19840007B808 /* RepeatingTimer.swift in Sources */,
 				644FA4191ADE197C0007B808 /* VariableTimer.swift in Sources */,
 				644FA41E1ADE19810007B808 /* TimerInternal.swift in Sources */,
+				054C97991D55219000C481BD /* OneShotTimer.swift in Sources */,
+				054C979C1D5521E800C481BD /* OneShotTimerTests.swift in Sources */,
+				054C979F1D55220B00C481BD /* OneShotDispatchTimer.swift in Sources */,
 				64B8678C1ACFCE070020EDDA /* DispatchTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -499,11 +525,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				054C97921D551DC000C481BD /* OneShotDispatchTimer.swift in Sources */,
 				64C884261C026886005DB548 /* TimerInternal.swift in Sources */,
 				64C884271C026886005DB548 /* Timer.swift in Sources */,
 				64C884281C026886005DB548 /* RepeatingTimer.swift in Sources */,
 				64C884291C026886005DB548 /* DispatchTimer.swift in Sources */,
 				64C8842A1C026886005DB548 /* VariableTimer.swift in Sources */,
+				054C97981D55201F00C481BD /* OneShotTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -517,6 +545,9 @@
 				64C8842D1C0268A1005DB548 /* Timer.swift in Sources */,
 				64C8842E1C0268A1005DB548 /* RepeatingTimer.swift in Sources */,
 				64C8842F1C0268A1005DB548 /* DispatchTimer.swift in Sources */,
+				054C979B1D55219200C481BD /* OneShotTimer.swift in Sources */,
+				054C979E1D5521EF00C481BD /* OneShotTimerTests.swift in Sources */,
+				054C97A11D55220C00C481BD /* OneShotDispatchTimer.swift in Sources */,
 				64C884301C0268A1005DB548 /* VariableTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -525,11 +556,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				054C97911D551DBF00C481BD /* OneShotDispatchTimer.swift in Sources */,
 				644FA41B1ADE197F0007B808 /* TimerInternal.swift in Sources */,
 				648578B41AD0F49A005F4297 /* DispatchTimer.swift in Sources */,
 				644FA4181ADE197B0007B808 /* VariableTimer.swift in Sources */,
 				6422C4A71AD38C6F00D480E8 /* Timer.swift in Sources */,
 				644FA41F1ADE19840007B808 /* RepeatingTimer.swift in Sources */,
+				054C97971D55201F00C481BD /* OneShotTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -543,6 +576,9 @@
 				644FA4211ADE19850007B808 /* RepeatingTimer.swift in Sources */,
 				644FA41A1ADE197C0007B808 /* VariableTimer.swift in Sources */,
 				644FA41C1ADE19800007B808 /* TimerInternal.swift in Sources */,
+				054C979A1D55219100C481BD /* OneShotTimer.swift in Sources */,
+				054C979D1D5521EE00C481BD /* OneShotTimerTests.swift in Sources */,
+				054C97A01D55220C00C481BD /* OneShotDispatchTimer.swift in Sources */,
 				64B0D0F71AD0E58A0020EFE1 /* DispatchTimer.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -722,10 +758,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -744,10 +777,7 @@
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEFINES_MODULE = YES;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(SDKROOT)/Developer/Library/Frameworks",
-					"$(inherited)",
-				);
+				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = ChronosTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
@@ -888,7 +918,7 @@
 		DD9ED4691AD0B36A0068D45E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
@@ -910,7 +940,7 @@
 		DD9ED46A1AD0B36A0068D45E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "Mac Developer";
+				CODE_SIGN_IDENTITY = "";
 				COMBINE_HIDPI_IMAGES = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				FRAMEWORK_SEARCH_PATHS = (
