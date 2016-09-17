@@ -24,17 +24,12 @@ internal struct State {
 
 // Mark:- Constants and Functions
 
-internal func startTime(interval: Double, now: Bool) -> dispatch_time_t {
-    return dispatch_time(DISPATCH_TIME_NOW, now ? 0 : Int64(interval * Double(NSEC_PER_SEC)))
+internal func startTime(_ interval: Double, now: Bool) -> DispatchTime {
+    return DispatchTime.now() + Double(now ? 0 : Int64(interval * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
 }
 
 
 // MARK:- Type Aliases
-
-/**
-The closure to execute if the timer fails to create a dispatch source.
-*/
-public typealias FailureClosure     = ((Void) -> Void)?
 
 /**
 The closure to execute when the timer fires.

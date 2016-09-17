@@ -46,14 +46,15 @@ time after the scheduled firing time. However, successive fires are guarenteed
 to occur in order.
 */
 @objc
-@available (iOS, introduced=8.0)
-@available (OSX, introduced=10.10)
-public class VariableTimer : NSObject, RepeatingTimer {
-    private var valid                   = State.invalid
-    private var running                 = State.paused
-    private var isExecuting             = false
-    private var shouldFireImmediately   = false
-    private var timer: dispatch_source_t!
+@available (iOS, introduced: 8.0)
+@available (OSX, introduced: 10.10)
+open class VariableTimer : NSObject, RepeatingTimer {
+  
+    fileprivate var valid                   = State.invalid
+    fileprivate var running                 = State.paused
+    fileprivate var isExecuting             = false
+    fileprivate var shouldFireImmediately   = false
+    fileprivate var timer: DispatchSourceTimer
     
     // MARK: Type Aliases
     
@@ -63,49 +64,49 @@ public class VariableTimer : NSObject, RepeatingTimer {
     - parameter timer:   The timer that fired.
     - parameter count:   The next invocation count. The first count is 0.
     */
-    public typealias IntervalClosure = ((timer: VariableTimer, count: Int) -> Double)
+    public typealias IntervalClosure = ((_ timer: VariableTimer, _ count: Int) -> Double)
     
     // MARK: Properties
     
     /**
     The timer's execution queue.
     */
-    public let queue: dispatch_queue_t!
+    open let queue: DispatchQueue!
     
     /**
     The timer's execution closure.
     */
-    public let closure: ExecutionClosure!
+    open let closure: ExecutionClosure!
     
     /**
     The timer's interval closure.
     */
-    public let intervalProvider: IntervalClosure!
+    open let intervalProvider: IntervalClosure!
     
     /**
     The number of times the execution closure has been executed.
     */
-    public private(set) var count: Int = 0
+    open fileprivate(set) var count: Int = 0
     
     /**
     true, if the timer is valid; otherwise, false.
     
     A timer is considered valid if it has not been canceled.
     */
-    public var isValid: Bool {
+    open var isValid: Bool {
         return valid == State.valid
     }
     
     /**
     true, if the timer is currently running; otherwise, false.
     */
-    public var isRunning: Bool {
+    open var isRunning: Bool {
         return running == State.running
     }
     
     // MARK: NSObject
     
-    override private init() { fatalError("Cannot create timer with init.") }
+    override fileprivate init() { fatalError("Cannot create timer with init.") }
     deinit { cancel() }
     
     // MARK: Creating a Variable Timer
@@ -119,9 +120,9 @@ public class VariableTimer : NSObject, RepeatingTimer {
     
     - returns: A newly created VariableTimer object.
     */
-    convenience public init(closure: ExecutionClosure, intervalProvider: IntervalClosure) {
-        let name    = "\(queuePrefix).\(NSUUID().UUIDString)"
-        let queue   = dispatch_queue_create((name as NSString).UTF8String, DISPATCH_QUEUE_SERIAL)
+    convenience public init(closure: @escaping ExecutionClosure, intervalProvider: @escaping IntervalClosure) {
+        let name    = "\(queuePrefix).\(UUID().uuidString)"
+        let queue   = DispatchQueue(label: name, attributes: [])
         self.init(closure: closure, intervalProvider: intervalProvider, queue: queue)
     }
     
@@ -134,50 +135,29 @@ public class VariableTimer : NSObject, RepeatingTimer {
     
     - returns: A newly created VariableTimer object.
     */
-    convenience public init(closure: ExecutionClosure, intervalProvider: IntervalClosure, queue: dispatch_queue_t) {
-        self.init(closure: closure, intervalProvider: intervalProvider, queue: queue, failureClosure: nil)
-    }
-    
-    /**
-    Creates a VariableTimer object.
-    
-    - parameter executionClosure:    The closure to execute at a variable interval.
-    - parameter intervalClosure:     The closure that provides time intervals.
-    - parameter queue:               The queue that should execute the given closure.
-    - parameter failureClosure:      The closure to execute if creation fails.
-    
-    - returns: A newly created VariableTimer object.
-    */
-    public init(closure: ExecutionClosure, intervalProvider: IntervalClosure, queue: dispatch_queue_t, failureClosure: FailureClosure) {
-        if let timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue) {
-            self.timer = timer
-            self.valid = State.valid
-        } else if let failureClosure = failureClosure {
-            failureClosure()
-        } else {
-            print("Failed to create dispatch source for timer.")
-        }
-        
-        self.queue              = queue
-        self.closure            = closure
-        self.intervalProvider   = intervalProvider
-        
-        super.init()
-        
-        weak var weakSelf: VariableTimer? = self
-        
-        dispatch_source_set_event_handler(timer, {
-            if let strongSelf = weakSelf {
-                strongSelf.shouldFireImmediately = false
-                strongSelf.isExecuting = true
-                strongSelf.closure(strongSelf, strongSelf.count)
-                strongSelf.count += 1
-                if !strongSelf.shouldFireImmediately {
-                    strongSelf.schedule(strongSelf.shouldFireImmediately)
-                }
-                strongSelf.isExecuting = false
-            }
-        })
+    public init(closure: @escaping ExecutionClosure, intervalProvider: @escaping IntervalClosure, queue: DispatchQueue) {
+      self.timer = DispatchSource.makeTimerSource(queue: queue)
+      self.valid = State.valid
+      self.queue = queue
+      self.closure = closure
+      self.intervalProvider = intervalProvider
+      
+      super.init()
+      
+      weak var weakSelf: VariableTimer? = self
+      
+      timer.setEventHandler(handler: {
+          if let strongSelf = weakSelf {
+              strongSelf.shouldFireImmediately = false
+              strongSelf.isExecuting = true
+              strongSelf.closure(strongSelf, strongSelf.count)
+              strongSelf.count += 1
+              if !strongSelf.shouldFireImmediately {
+                  strongSelf.schedule(strongSelf.shouldFireImmediately)
+              }
+              strongSelf.isExecuting = false
+          }
+      })
     }
     
     /**
@@ -186,10 +166,10 @@ public class VariableTimer : NSObject, RepeatingTimer {
     - parameter now: true, if the execution closure should be scheduled immediately;
     false, otherwise
     */
-    func schedule(now: Bool) {
+    func schedule(_ now: Bool) {
         if isValid {
-            let interval = intervalProvider(timer: self, count: count)
-            dispatch_source_set_timer(timer, startTime(interval, now: now), UInt64(interval * Double(NSEC_PER_SEC)), 0)
+          let interval: Double = intervalProvider(self, count)
+          timer.scheduleRepeating(deadline: startTime(interval, now: now), interval: DispatchTimeInterval.nanoseconds(Int(interval.multiplied(by: Double(NSEC_PER_SEC)))))
         }
     }
     
@@ -200,26 +180,26 @@ public class VariableTimer : NSObject, RepeatingTimer {
     
     - parameter now:     true, if the timer should fire immediately.
     */
-    public func start(now: Bool) {
+    open func start(_ now: Bool) {
         validate()
         if OSAtomicCompareAndSwap32Barrier(State.paused, State.running, &running) {
             if now {
-                self.shouldFireImmediately = true
-                dispatch_source_set_timer(timer, DISPATCH_TIME_NOW, DISPATCH_TIME_FOREVER, 0)
+              self.shouldFireImmediately = true
+              timer.scheduleOneshot(deadline: DispatchTime.now())
             } else if !isExecuting {
                 schedule(now)
             }
-            dispatch_resume(timer)
+            timer.resume()
         }
     }
     
     /**
     Pauses the timer and does not reset the count.
     */
-    public func pause() {
+    open func pause() {
         validate()
         if OSAtomicCompareAndSwap32Barrier(State.running, State.paused, &running) {
-            dispatch_suspend(timer)
+            timer.suspend()
         }
     }
     
@@ -229,22 +209,20 @@ public class VariableTimer : NSObject, RepeatingTimer {
     Attempting to start or pause an invalid timer is considered an error and
     will throw an exception.
     */
-    public func cancel() {
+    open func cancel() {
         if OSAtomicCompareAndSwap32Barrier(State.valid, State.invalid, &valid) {
-            if let timer = timer {
-                if running == State.paused {
-                    dispatch_resume(timer)
-                }
-                
-                running = State.paused
-                dispatch_source_cancel(timer)
-            }
+          if running == State.paused {
+            timer.resume()
+          }
+          
+          running = State.paused
+          timer.cancel()
         }
     }
     
-    private func validate() {
+    fileprivate func validate() {
         if valid != State.valid {
-            NSException(name: NSInternalInconsistencyException,
+            NSException(name: NSExceptionName.internalInconsistencyException,
                 reason: "Attempting to use invalid DispatchTimer",
                 userInfo: nil).raise()
         }

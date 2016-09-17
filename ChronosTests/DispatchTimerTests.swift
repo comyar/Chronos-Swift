@@ -34,8 +34,8 @@ import XCTest
 class DispatchTimerTests : XCTestCase {
     
     // 5 second timeout for async tests
-    var timeout: dispatch_time_t {
-        return dispatch_time(DISPATCH_TIME_NOW, Int64(5.0 * Double(NSEC_PER_SEC)))
+    var timeout: DispatchTime {
+      return DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds.advanced(by: Int(5 * NSEC_PER_SEC)))
     }
     
     func testConvenienceInitializer() {
@@ -47,11 +47,11 @@ class DispatchTimerTests : XCTestCase {
     }
     
     func testDispatchTimer() {
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
         
         let timer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, count: Int) in
             if count == 10 {
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
             }
         })
         
@@ -60,13 +60,13 @@ class DispatchTimerTests : XCTestCase {
         
         timer.start(true)
         
-        dispatch_semaphore_wait(semaphore, timeout)
+        semaphore.wait(timeout: timeout)
         
         timer.cancel()
     }
     
     func testRepeatedTimerUsage() {
-        let semaphore: dispatch_semaphore_t = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
         var flag: Bool = false
         
         let dispatchTimer: DispatchTimer = DispatchTimer(interval: 0.25, closure: { (timer: RepeatingTimer, invocations: Int) in
@@ -91,7 +91,7 @@ class DispatchTimerTests : XCTestCase {
                 XCTAssertFalse(dTimer.isValid)
                 XCTAssertFalse(dTimer.isRunning)
                 
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
             }
         })
         
@@ -100,7 +100,7 @@ class DispatchTimerTests : XCTestCase {
         XCTAssertTrue(dispatchTimer.isValid)
         XCTAssertTrue(dispatchTimer.isRunning)
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        semaphore.wait(timeout: DispatchTime.distantFuture)
     }
     
     func testStartPassCancel() {

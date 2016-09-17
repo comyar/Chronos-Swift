@@ -42,7 +42,7 @@ public protocol Timer {
     /**
     The timer's execution queue.
     */
-    var queue: dispatch_queue_t! { get }
+    var queue: DispatchQueue! { get }
     
     /**
     Returns whether the timer is valid or not.
@@ -59,7 +59,7 @@ public protocol Timer {
     
     - parameter now: true, if timer starts immediately; false, otherwise.
     */
-    func start(now: Bool)
+    func start(_ now: Bool)
     
     /**
     Pauses the timer.
