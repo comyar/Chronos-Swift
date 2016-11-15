@@ -6,8 +6,10 @@
 [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Olympus-Library/Chronos-Swift)
 [![Platform](http://img.shields.io/cocoapods/p/Chronos-Swift.svg)]()
 [![License](http://img.shields.io/cocoapods/l/Chronos-Swift.svg)](https://github.com/Olympus-Library/Chronos/blob/master/LICENSE)
+[![git-brag-stats](https://labs.turbo.run/git-brag?user=comyar&repo=Chronos-Swift)](https://github.com/comyar/Chronos-Swift)
 
 Chronos is a collection of useful Grand Central Dispatch utilities. If you have any specific requests or ideas for new utilities, don't hesitate to create a new issue.
+
 
 ## Utilities
 
