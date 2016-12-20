@@ -60,7 +60,7 @@ class VariableTimerTests : XCTestCase {
         }
         
         variableTimer.start(true)
-        semaphore.wait(timeout: DispatchTime.distantFuture)
+        let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         
         XCTAssertEqual(6, executedInvocations.count);
         XCTAssertEqual(5, intervalInvocations.count);
@@ -94,7 +94,7 @@ class VariableTimerTests : XCTestCase {
         
         timer.start(true)
         
-        semaphore.wait(timeout: DispatchTime.distantFuture)
+        let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         
         XCTAssertEqual(4, executedInvocations.count);
         XCTAssertEqual(2, intervalInvocations.count);
@@ -127,7 +127,7 @@ class VariableTimerTests : XCTestCase {
       
         timer.start(false)
         
-        semaphore.wait(timeout: DispatchTime.distantFuture)
+        let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         
         XCTAssertEqual(4, executedInvocations.count);
         XCTAssertEqual(3, intervalInvocations.count);
@@ -160,7 +160,7 @@ class VariableTimerTests : XCTestCase {
         
         timer.start(false)
         
-        semaphore.wait(timeout: DispatchTime.distantFuture)
+        let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         
         XCTAssertEqual(4, executedInvocations.count);
         XCTAssertEqual(4, intervalInvocations.count);
@@ -190,7 +190,7 @@ class VariableTimerTests : XCTestCase {
         XCTAssertTrue(variableTimer.isRunning);
         XCTAssertTrue(variableTimer.isValid);
         
-        semaphore.wait(timeout: DispatchTime.distantFuture)
+        let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
         
         variableTimer.cancel()
     }
