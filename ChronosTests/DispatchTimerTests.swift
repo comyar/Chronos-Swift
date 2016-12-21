@@ -35,7 +35,7 @@ class DispatchTimerTests : XCTestCase {
     
     // 5 second timeout for async tests
     var timeout: DispatchTime {
-      return DispatchTime(uptimeNanoseconds: DispatchTime.now().uptimeNanoseconds.advanced(by: Int(5 * NSEC_PER_SEC)))
+        return DispatchTime(uptimeNanoseconds:(DispatchTime.now() + 5).uptimeNanoseconds)
     }
     
     func testConvenienceInitializer() {
@@ -60,7 +60,7 @@ class DispatchTimerTests : XCTestCase {
         
         timer.start(true)
         
-        semaphore.wait(timeout: timeout)
+        let _ = semaphore.wait(timeout: timeout)
         
         timer.cancel()
     }
@@ -100,7 +100,7 @@ class DispatchTimerTests : XCTestCase {
         XCTAssertTrue(dispatchTimer.isValid)
         XCTAssertTrue(dispatchTimer.isRunning)
         
-        semaphore.wait(timeout: DispatchTime.distantFuture)
+        let _ = semaphore.wait(timeout: DispatchTime.distantFuture)
     }
     
     func testStartPassCancel() {
