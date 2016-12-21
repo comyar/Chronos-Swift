@@ -93,3 +93,4 @@ Chronos is available under the [MIT License](LICENSE).
 * [@comyar](https://github.com/comyar)
 * [@schun93](https://github.com/schun93)
 * [@tokorom](https://github.com/tokorom)
+* [@ggiampietro](https://github.com/ggiampietro)
