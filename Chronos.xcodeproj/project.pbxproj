@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1323B0DA1E43AF1C00901259 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1323B0D91E43AF1C00901259 /* Stopwatch.swift */; };
+		1323B0DB1E43AF1C00901259 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1323B0D91E43AF1C00901259 /* Stopwatch.swift */; };
+		1323B0DC1E43AF1C00901259 /* Stopwatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1323B0D91E43AF1C00901259 /* Stopwatch.swift */; };
 		6422C4A61AD38BBC00D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
 		6422C4A71AD38C6F00D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
 		6422C4A81AD38C6F00D480E8 /* Timer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6422C4A51AD38BBC00D480E8 /* Timer.swift */; };
@@ -101,6 +104,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		1323B0D91E43AF1C00901259 /* Stopwatch.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Stopwatch.swift; sourceTree = "<group>"; };
 		6422C4A51AD38BBC00D480E8 /* Timer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Timer.swift; sourceTree = "<group>"; };
 		644FA4141ADE19560007B808 /* TimerInternal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TimerInternal.swift; sourceTree = "<group>"; };
 		644FA4161ADE19760007B808 /* VariableTimer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariableTimer.swift; sourceTree = "<group>"; };
@@ -168,6 +172,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		1323B0DD1E43AF3B00901259 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				1323B0D91E43AF1C00901259 /* Stopwatch.swift */,
+			);
+			name = Utils;
+			sourceTree = "<group>";
+		};
 		64B3CE121ACDDA2800145E36 = {
 			isa = PBXGroup;
 			children = (
@@ -217,6 +229,7 @@
 			children = (
 				644FA4221ADE19A50007B808 /* DispatchTimerTests.swift */,
 				64502B951ADE19C50008443B /* VariableTimerTests.swift */,
+				1323B0DD1E43AF3B00901259 /* Utils */,
 				64B3CE2C1ACDDA2800145E36 /* Supporting Files */,
 			);
 			path = ChronosTests;
@@ -502,6 +515,7 @@
 				644FA4191ADE197C0007B808 /* VariableTimer.swift in Sources */,
 				644FA41E1ADE19810007B808 /* TimerInternal.swift in Sources */,
 				64B8678C1ACFCE070020EDDA /* DispatchTimer.swift in Sources */,
+				1323B0DA1E43AF1C00901259 /* Stopwatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -528,6 +542,7 @@
 				64C8842E1C0268A1005DB548 /* RepeatingTimer.swift in Sources */,
 				64C8842F1C0268A1005DB548 /* DispatchTimer.swift in Sources */,
 				64C884301C0268A1005DB548 /* VariableTimer.swift in Sources */,
+				1323B0DC1E43AF1C00901259 /* Stopwatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -554,6 +569,7 @@
 				644FA41A1ADE197C0007B808 /* VariableTimer.swift in Sources */,
 				644FA41C1ADE19800007B808 /* TimerInternal.swift in Sources */,
 				64B0D0F71AD0E58A0020EFE1 /* DispatchTimer.swift in Sources */,
+				1323B0DB1E43AF1C00901259 /* Stopwatch.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
