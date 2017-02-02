@@ -56,8 +56,6 @@ open class DispatchTimer : NSObject, RepeatingTimer {
     fileprivate var leeway: UInt64 {
         return UInt64(0.05 * interval) * NSEC_PER_SEC;
     }
-    private let timebaseNumer: Double
-    private let timebaseDenom: Double
     
     // MARK: Properties
     
@@ -133,12 +131,6 @@ open class DispatchTimer : NSObject, RepeatingTimer {
       self.queue      = queue
       self.interval   = interval
       self.closure    = closure
-      
-      //set timebase info
-      var info = mach_timebase_info(numer: 0, denom: 0)
-      mach_timebase_info(&info)
-      self.timebaseNumer = Double(info.numer)
-      self.timebaseDenom = Double(info.denom)
         
       super.init()
       
@@ -163,7 +155,7 @@ open class DispatchTimer : NSObject, RepeatingTimer {
         validate()
         if OSAtomicCompareAndSwap32Barrier(State.paused, State.running, &running) {
           timer.scheduleRepeating(deadline: startTime(interval, now: now),
-                                  interval:.nanoseconds(Int((interval * self.timebaseNumer) / self.timebaseDenom)))
+                                  interval: interval)
           timer.resume()
         }
     }

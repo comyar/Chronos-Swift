@@ -163,4 +163,64 @@ class DispatchTimerTests : XCTestCase {
         
         XCTAssertFalse(dispatchTimer.isValid)
     }
+    
+    func testTimeInterval() {
+        var stopwatch = Stopwatch()
+        stopwatch.start()
+        
+        let exp = expectation(description: "\(#function)\(#line)")
+        
+        var records = [Double]()
+        
+        let timeout = 22.2
+        let interval = 5.5
+        
+        let dispatchTimer = DispatchTimer(interval: interval) { (timer: RepeatingTimer, invocations: Int) in
+            stopwatch.stop()
+            records += [floor(stopwatch.seconds)]
+            
+            if invocations == Int(floor(timeout/interval))-1 {
+                exp.fulfill()
+            }
+        }
+        
+        dispatchTimer.start(false)
+        
+        waitForExpectations (timeout: timeout) { _ in
+            XCTAssertTrue(records.count == Int(timeout/interval))
+            for i in 0..<Int(floor(timeout/interval)) {
+                XCTAssertTrue(records[i] == floor(interval*Double(i + 1)))
+            }
+        }
+    }
+    
+    func testTimeIntervalStartingNow() {
+        var stopwatch = Stopwatch()
+        stopwatch.start()
+        
+        let exp = expectation(description: "\(#function)\(#line)")
+        
+        var records = [Double]()
+        
+        let timeout = 22.2
+        let interval = 5.5
+        
+        let dispatchTimer = DispatchTimer(interval: interval) { (timer: RepeatingTimer, invocations: Int) in
+            stopwatch.stop()
+            records += [floor(stopwatch.seconds)]
+            
+            if invocations == Int(floor(timeout/interval)) {
+                exp.fulfill()
+            }
+        }
+        
+        dispatchTimer.start(true)
+        
+        waitForExpectations (timeout: timeout) { _ in
+            XCTAssertTrue(records.count == Int(timeout/interval)+1)
+            for i in 0...Int(floor(timeout/interval)) {
+                XCTAssertTrue(records[i] == floor(interval*Double(i)))
+            }
+        }
+    }
 }
